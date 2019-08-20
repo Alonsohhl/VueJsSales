@@ -36,6 +36,7 @@
     "axios": "0.18.0",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.24",
+    "dotenv": "^8.1.0",
     "lodash": "4.17.11",
     "luxon": "^1.17.2",
     "metismenujs": "^1.0.3",
@@ -46,6 +47,7 @@
     "vue-perfect-scrollbar": "^0.1.0",
     "vue-resource": "^1.5.1",
     "vue-router": "3.0.6",
+    "vuelidate": "^0.7.4",
     "vuex": "3.1.0",
     "weekstart": "^1.0.0"
   },

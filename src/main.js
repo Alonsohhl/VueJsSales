@@ -7,6 +7,9 @@ import VCalendar from 'v-calendar';
 import 'v-calendar/lib/v-calendar.min.css';
 
 import BootstrapVue from 'bootstrap-vue'
+import Vuelidate from 'vuelidate'
+
+require('dotenv').config();
 
 // Don't warn about using the dev version of Vue in development.
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
@@ -19,6 +22,7 @@ if (process.env.VUE_APP_TEST === 'e2e') {
 Vue.use(VCalendar, {
   // componentPrefix: 'vc',  // Use <vc-calendar /> instead of <v-calendar />
 });
+Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 
 
