@@ -192,6 +192,25 @@
               </div>
             </div>
 
+<div class="form-row mb-2">
+              <div class="">
+
+                <label for="product-price">
+                  Ingresar Proveedor
+                  <span class="text-danger">*</span>
+                </label>
+                <!-- eslint-disable-next-line -->
+<vue-bootstrap-typeahead
+    class="mb-2 " v-model="query" :data="proveedores"
+    :serializer="item => item.RazonSoc_Prov"
+    placeholder="Buscar Proveedores" @hit = "selectedProveedor = $event"
+  />
+<input v-model="selectedProveedor.RazonSoc_Prov" v-if="selectedProveedor && selectedProveedor.RazonSoc_Prov" type="text" readonly="" class="header-title form-control-plaintext" id="example-static" >
+
+                  </div>
+            </div>
+
+
             <button type="submit" class="btn btn-primary waves-effect waves-light mt-3">Ingresar Producto</button>
           </form>
         </div>
@@ -210,22 +229,16 @@
 import axios from 'axios'
 
 import { required, minValue } from 'vuelidate/lib/validators'// minLength
-// var path = require('path');
-// import {PATH_API} from '../../config'
-// import { Datetime } from 'vue-datetime';
-// import 'vue-datetime/dist/vue-datetime.css'
+import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
+
+const API_URL = 'http://localhost:3010/products/getproveedores?razSoc=:query'
+
 
 export default {
   name: 'prod-insert',
   components: {
-    //   datetime: Datetime
+    VueBootstrapTypeahead
   },
-  //   props: {
-  //     minimized: {
-  //       type: Boolean,
-  //       required: true,
-  //     },
-  //   },
   data() {
     return {
       //   items: navigationRoutes.routes,
@@ -242,6 +255,10 @@ export default {
       stockMin: 0,
       stockMax: 0,
       medPrescripcion: 0,
+
+      query: '',
+      selectedProveedor: null,
+      proveedores: []
     }
   },
   validations: {
@@ -345,18 +362,41 @@ export default {
         }
 
 
+    },
+    async getAddresses(query) {
+      const res = await fetch(API_URL.replace(':query', query));
+      const suggestions = await res.json()
+
+      this.addresses = suggestions
+      console.dir(this.addresses)
     }
+
   },
   created: function() {
     axios
       .get('http://localhost:3010/products/getcat/10')
       .then((response) => {
-        console.log('Exito')
+        console.log('Cat Loaded')
         this.categories = response.data
       })
       .catch(function(error) {
         console.log('error con Categorias ' + error)
       })
+  },
+  watch: {
+    query(newQuery) {
+      axios.get(`http://localhost:3010/products/getproveedores?razSoc=${newQuery}`)
+        .then((res) => {
+                    console.log("TCL: query -> res.data", res.data)
+          this.proveedores = res.data
+
+        })
+    }
+  },
+  filters: {
+    stringify(value) {
+      return JSON.stringify(value, null, 2)
+    }
   },
 
   // a computed getter

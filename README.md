@@ -1,6 +1,5 @@
-# Ubold - Vue based admin template
+# Farmacia - Sistema de Ventas
 
-### This project is crafted using [vue-enterprise-boilerplate](https://github.com/chrisvfritz/vue-enterprise-boilerplate.git). It's an SPA project using Vue CLI 3.
 
 ## Getting started
 
