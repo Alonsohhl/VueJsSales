@@ -27,6 +27,13 @@ export default [
             component: () => import('../components/products/insert'),
             // default: true,
           },
+          {
+            name: 'mainProd',
+            path: 'mainProd',
+            // component: () => import('../components/products/main'),
+            component: () => lazyLoadView(import('../components/products/main')),
+            // default: true,
+          }
         ]
       },
     ]

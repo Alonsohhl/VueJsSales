@@ -5,7 +5,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h2 class="header-title mb-4">Ingreso de Productos</h2>
+          <h2 class="header-title mb-4">Ingreso</h2>
 
           <!-- <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p> -->
           <div class="d-flex justify-content-center" >
@@ -205,7 +205,12 @@
     :serializer="item => item.RazonSoc_Prov"
     placeholder="Buscar Proveedores" @hit = "selectedProveedor = $event"
   />
-<input v-model="selectedProveedor.RazonSoc_Prov" v-if="selectedProveedor && selectedProveedor.RazonSoc_Prov" type="text" readonly="" class="header-title form-control-plaintext" id="example-static" >
+
+
+<label v-if="selectedProveedor && selectedProveedor.RazonSoc_Prov" for="selectedProveedor"> <strong>RUC: </strong>{{ selectedProveedor.RUC }}   /  <strong>Razon Social: </strong>{{ selectedProveedor.RazonSoc_Prov }} </label>
+ <ul class="parsley-errors-list filled mb-2" id="parsley-id-7" v-if="$v.query.$anyDirty && !provIndex" >
+                  <li class="parsley-required">Requerido.</li>
+                </ul>
 
                   </div>
             </div>
@@ -255,6 +260,8 @@ export default {
       stockMin: 0,
       stockMax: 0,
       medPrescripcion: 0,
+      // proveedorindex: getProvIndex(),
+      // provIndex,
 
       query: '',
       selectedProveedor: null,
@@ -295,7 +302,11 @@ export default {
     },
     medPrescripcion: {
       required,
+    },
+    query: {
+      required,
     }
+
   },
     // age: {
     //   between: between(20, 30)
@@ -322,7 +333,8 @@ export default {
                     "Stock_Min": this.stockMin,
                     "Stock_Max": this.stockMax,
                     "Pres_Medi": this.medPrescripcion,
-                    "T01FCATId": this.selectedCat
+                    "T01FCATId": this.selectedCat,
+                    "T01FPROId": this.selectedProveedor.id
                 }
             })
             .then((response) => {
@@ -398,6 +410,19 @@ export default {
       return JSON.stringify(value, null, 2)
     }
   },
+  computed:{
+    provIndex: {
+      get:function () {
+        if (this.selectedProveedor && this.selectedProveedor.id) {
+          return this.selectedProveedor.id
+        } else {
+          return null
+        }
+    }
+    }
+
+
+  }
 
   // a computed getter
 }

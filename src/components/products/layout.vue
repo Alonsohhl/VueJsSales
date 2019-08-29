@@ -18,6 +18,7 @@
         </div>
       </div>
     </div> -->
+    <h2 class="header-title mb-4">Productos</h2>
     <router-view/>
   </div>
 </template>

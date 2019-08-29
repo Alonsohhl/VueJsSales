@@ -42,6 +42,9 @@ export default {
 
             <ul class="nav-third-level nav collapse" aria-expanded="true">
               <li>
+                <router-link tag="a" :to="{ name: 'mainProd' }" >productos</router-link>
+              </li>
+              <li>
                 <router-link tag="a" :to="{ name: 'insertarProd' }" >Ingresar Productos</router-link>
               </li>
               <!-- <li>
