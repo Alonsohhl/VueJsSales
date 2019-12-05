@@ -1,4 +1,5 @@
 {
   "title": "Info-Farma",
-  "description": "Sistema de ventas"
+  "description": "Sistema de ventas",
+  "urlBase": "http://localhost:3010/"
 }

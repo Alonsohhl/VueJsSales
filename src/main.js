@@ -3,13 +3,16 @@ import App from './app'
 import router from '@router'
 import store from '@state/store'
 import '@components/_globals'
-import VCalendar from 'v-calendar';
-import 'v-calendar/lib/v-calendar.min.css';
+import VCalendar from 'v-calendar'
+import 'v-calendar/lib/v-calendar.min.css'
 
 import BootstrapVue from 'bootstrap-vue'
 import Vuelidate from 'vuelidate'
+import { Table, Input } from 'buefy'
+import VueFlashMessage from 'vue-flash-message'
+// import 'buefy/dist/buefy.css'
 
-require('dotenv').config();
+require('dotenv').config()
 
 // Don't warn about using the dev version of Vue in development.
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
@@ -21,10 +24,15 @@ if (process.env.VUE_APP_TEST === 'e2e') {
 }
 Vue.use(VCalendar, {
   // componentPrefix: 'vc',  // Use <vc-calendar /> instead of <v-calendar />
-});
+})
+Vue.use(VueFlashMessage)
+Vue.use(Table)
+Vue.use(Input)
+// Vue.use(Buefy)
 Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 
+require('vue-flash-message/dist/vue-flash-message.min.css')
 
 const app = new Vue({
   router,

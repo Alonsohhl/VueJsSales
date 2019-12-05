@@ -30,13 +30,38 @@ export default [
           {
             name: 'mainProd',
             path: 'mainProd',
-            // component: () => import('../components/products/main'),
-            component: () => lazyLoadView(import('../components/products/main')),
-            // default: true,
-          }
-        ]
+            component: () =>
+              lazyLoadView(import('../components/products/main')),
+          },
+          {
+            name: 'mainCategories',
+            path: 'mainCategories',
+            component: () =>
+              lazyLoadView(import('../components/products/mainCategories')),
+          },
+        ],
       },
-    ]
+      {
+        name: 'ventas',
+        path: 'ventas',
+        component: () => import('../components/sales/invoice'),
+        children: [
+          {
+            name: 'insVenta',
+            path: 'insertarVenta',
+            component: () => import('../components/sales/invoice'),
+            // default: true,
+          },
+          // {
+          //   name: 'mainProd',
+          //   path: 'mainProd',
+          //   // component: () => import('../components/products/main'),
+          //   component: () => lazyLoadView(import('../components/products/main')),
+          //   // default: true,
+          // }
+        ],
+      },
+    ],
   },
   {
     path: '/login',
