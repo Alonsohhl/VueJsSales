@@ -35,6 +35,7 @@ export default {
       this.tryingToLogIn = true
       // Reset the authError if it existed.
       this.authError = null
+
       return this.logIn({
         username: this.username,
         password: this.password,
@@ -46,10 +47,12 @@ export default {
           this.$router.push(this.$route.query.redirectFrom || { name: 'home' })
         })
         .catch((error) => {
+          console.dir(error)
           this.tryingToLogIn = false
-          this.authError = error.response
-            ? error.response.data.Error.message
-            : 'Error con el Servidor'
+          this.authError = error.response.data.message
+            ? error.response.data.message
+            : // ? error.response.data.message
+              'Error con el Servidor'
           this.isAuthError = true
         })
     },
@@ -126,15 +129,15 @@ export default {
                 tag="a"
                 to="/forget-password"
                 class="text-white-50 ml-1"
-                >Forgot your password?</router-link
+                >Olvidaste tu password?</router-link
               >
             </p>
-            <p class="text-white-50"
+            <!-- <p class="text-white-50"
               >Don't have an account?
               <router-link tag="a" to="/register" class="text-white ml-1"
                 ><b>Sign Up</b></router-link
               >
-            </p>
+            </p> -->
           </div>
           <!-- end col -->
         </div>

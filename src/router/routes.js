@@ -11,8 +11,8 @@ export default [
     props: (route) => ({ user: store.state.auth.currentUser || {} }),
     children: [
       {
-        name: 'dashboard',
-        path: 'dashboard',
+        name: 'home',
+        path: '/',
         component: () => import('../components/dashboard/dashboard'),
         default: true,
       },
@@ -44,7 +44,7 @@ export default [
       {
         name: 'ventas',
         path: 'ventas',
-        component: () => import('../components/sales/invoice'),
+        component: () => import('../components/sales/main'),
         children: [
           {
             name: 'insVenta',
@@ -61,8 +61,47 @@ export default [
           // }
         ],
       },
+      {
+        name: 'usuarios',
+        path: 'usuarios',
+        component: () => import('../components/users/main'),
+        children: [
+          {
+            name: 'clientes',
+            path: 'clientes',
+            component: () => import('../components/users/clientes'),
+            // default: true,
+          },
+          {
+            name: 'clientesDetalle',
+            path: 'clientes/:id',
+            component: () => import('../components/users/addCliente'),
+            // default: true,
+          },
+          {
+            name: 'addCliente',
+            path: 'ingresarCliente',
+            component: () => import('../components/users/addCliente'),
+            // props: { mode: 'ING' },
+          },
+          {
+            name: 'sisUser',
+            path: 'sisUsuarios',
+            component: () => import('../components/users/sisUser'),
+            // props: { mode: 'ING' },
+          },
+          // {
+          //   name: 'mainProd',
+          //   path: 'mainProd',
+          //   // component: () => import('../components/products/main'),
+          //   component: () => lazyLoadView(import('../components/products/main')),
+          //   // default: true,
+          // }
+        ],
+      },
     ],
   },
+
   {
     path: '/login',
     name: 'login',

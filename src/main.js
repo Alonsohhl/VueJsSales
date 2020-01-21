@@ -25,14 +25,14 @@ if (process.env.VUE_APP_TEST === 'e2e') {
 Vue.use(VCalendar, {
   // componentPrefix: 'vc',  // Use <vc-calendar /> instead of <v-calendar />
 })
+
+require('vue-flash-message/dist/vue-flash-message.min.css')
 Vue.use(VueFlashMessage)
 Vue.use(Table)
 Vue.use(Input)
 // Vue.use(Buefy)
 Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
-
-require('vue-flash-message/dist/vue-flash-message.min.css')
 
 const app = new Vue({
   router,

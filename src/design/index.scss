@@ -109,6 +109,32 @@ File: Main Css File
 
 @import "icons";
 
+.cardx {
+  width: 100%;
+  max-width: 300px;
+  min-width: 200px;
+  height: 144px;
+
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
+  border: 2px solid rgba(7, 7, 7, 0.12);
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+}
+
+.cardx:hover {
+  height: 150px;
+}
+
 :export {
   // Any values that need to be accessible from JavaScript
   // outside of a Vue component can be defined here, prefixed

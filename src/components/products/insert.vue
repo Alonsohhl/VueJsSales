@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="row">
     <div class="col-md-6">
@@ -8,16 +6,35 @@
           <h2 class="header-title mb-4">Ingreso</h2>
 
           <!-- <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p> -->
-          <div class="d-flex justify-content-center" >
-            <div class="spinner-border text-success m-2 avatar-lg" role="status" v-show="(submitStatus === 'PENDING')"></div>
+          <div class="d-flex justify-content-center">
+            <div
+              class="spinner-border text-success m-2 avatar-lg"
+              role="status"
+              v-show="submitStatus === 'PENDING'"
+            ></div>
           </div>
-          <div class="alert alert-success" role="alert" v-show="(submitStatus === 'OK')">
-              <i class="mdi mdi-check-all mr-2"></i> Producto ingresado <strong>correctamente!</strong>
+          <div
+            class="alert alert-success"
+            role="alert"
+            v-show="submitStatus === 'OK'"
+          >
+            <i class="mdi mdi-check-all mr-2"></i> Producto ingresado
+            <strong>correctamente!</strong>
           </div>
 
-          <form @submit="checkForm" v-show="(submitStatus !== 'PENDING')" action="/something" method="post" :disabled=0>
-            <div class="alert alert-danger bg-danger text-white border-0" role="alert" v-if="submitStatus === 'ERROR'">
-                Los campos no son <strong>validos</strong>
+          <form
+            @submit="checkForm"
+            v-show="submitStatus !== 'PENDING'"
+            action="/something"
+            method="post"
+            :disabled="0"
+          >
+            <div
+              class="alert alert-danger bg-danger text-white border-0"
+              role="alert"
+              v-if="submitStatus === 'ERROR'"
+            >
+              Los campos no son <strong>validos</strong>
             </div>
             <div class="form-row mb-1">
               <div class="col-auto">
@@ -35,13 +52,17 @@
                 >
                   <!-- <option selected >Choose</option> -->
                   <option
-                    v-for="(cat) in categories"
+                    v-for="cat in categories"
                     :key="cat.id"
                     :value="cat.id"
-                  >{{ cat.Desc_Cat }}</option>
-
+                    >{{ cat.Desc_Cat }}</option
+                  >
                 </select>
-                <ul class="parsley-errors-list filled mb-2" id="parsley-id-7" v-if="$v.selectedCat.$anyDirty && !$v.selectedCat.required" >
+                <ul
+                  class="parsley-errors-list filled mb-2"
+                  id="parsley-id-7"
+                  v-if="$v.selectedCat.$anyDirty && !$v.selectedCat.required"
+                >
                   <li class="parsley-required">Requerido.</li>
                 </ul>
               </div>
@@ -50,24 +71,24 @@
                   Nombre del producto
                   <!-- <span class="text-danger">*</span> -->
 
-
                   <!-- <div class="error" v-if="$v.productName.required">Field is required</div> -->
                 </label>
 
                 <input
-
                   v-model.trim="$v.productName.$model"
                   id="product-names"
                   type="text"
                   class="form-control"
                   placeholder="e.g : Medicamento"
                 />
-                <ul class="parsley-errors-list filled mb-2" id="parsley-id-7" v-if="$v.productName.$anyDirty && !$v.productName.required" >
+                <ul
+                  class="parsley-errors-list filled mb-2"
+                  id="parsley-id-7"
+                  v-if="$v.productName.$anyDirty && !$v.productName.required"
+                >
                   <li class="parsley-required">Requerido.</li>
                 </ul>
-
               </div>
-
             </div>
             <!-- <ul class="parsley-errors-list filled mb-2" id="parsley-id-7"><li class="parsley-required">This value is required.</li></ul> -->
 
@@ -98,9 +119,9 @@
                   color="red"
                   is-dark
                   :input-props="{
-                    class: 'form-control' ,
+                    class: 'form-control',
                     readonly: true,
-                    }"
+                  }"
                 />
               </div>
               <div class="col-auto">
@@ -113,9 +134,9 @@
                   color="red"
                   is-dark
                   :input-props="{
-                    class: 'form-control' ,
+                    class: 'form-control',
                     readonly: true,
-                    }"
+                  }"
                 />
               </div>
             </div>
@@ -132,8 +153,14 @@
                   id="product-price"
                   placeholder="Ingrese cantidad"
                 />
-                <ul class="parsley-errors-list filled mb-2" id="parsley-id-7" v-if="$v.precioCompra.$anyDirty && !$v.precioCompra.minValue" >
-                  <li class="parsley-required">el <strong>Valor</strong> tiene que ser mayor.</li>
+                <ul
+                  class="parsley-errors-list filled mb-2"
+                  id="parsley-id-7"
+                  v-if="$v.precioCompra.$anyDirty && !$v.precioCompra.minValue"
+                >
+                  <li class="parsley-required"
+                    >el <strong>Valor</strong> tiene que ser mayor.</li
+                  >
                 </ul>
               </div>
               <div class="col-auto">
@@ -148,13 +175,17 @@
                   id="product-price"
                   placeholder="Ingrese cantidad"
                 />
-                <ul class="parsley-errors-list filled mb-2" id="parsley-id-7" v-if="$v.precioVenta.$anyDirty && !$v.precioVenta.minValue" >
-                  <li class="parsley-required">el <strong>Valor</strong> tiene que ser mayor.</li>
+                <ul
+                  class="parsley-errors-list filled mb-2"
+                  id="parsley-id-7"
+                  v-if="$v.precioVenta.$anyDirty && !$v.precioVenta.minValue"
+                >
+                  <li class="parsley-required"
+                    >el <strong>Valor</strong> tiene que ser mayor.</li
+                  >
                 </ul>
               </div>
             </div>
-
-
 
             <div class="form-row mb-2">
               <div class="col-auto">
@@ -169,8 +200,14 @@
                   id="product-price"
                   placeholder="Ingrese cantidad"
                 />
-                <ul class="parsley-errors-list filled mb-2" id="parsley-id-7" v-if="$v.stockMin.$anyDirty && !$v.stockMin.minValue" >
-                  <li class="parsley-required">el <strong>Valor</strong> tiene que ser mayor.</li>
+                <ul
+                  class="parsley-errors-list filled mb-2"
+                  id="parsley-id-7"
+                  v-if="$v.stockMin.$anyDirty && !$v.stockMin.minValue"
+                >
+                  <li class="parsley-required"
+                    >el <strong>Valor</strong> tiene que ser mayor.</li
+                  >
                 </ul>
               </div>
               <div class="col-auto">
@@ -179,48 +216,65 @@
                   <span class="text-danger">*</span>
                 </label>
                 <input
-
                   v-model.trim="$v.stockMax.$model"
                   type="number"
                   class="form-control"
                   id="product-price"
                   placeholder="Ingrese cantidad"
                 />
-                <ul class="parsley-errors-list filled mb-2" id="parsley-id-7" v-if="$v.stockMax.$anyDirty && !$v.stockMax.minValue" >
-                  <li class="parsley-required">el <strong>Valor</strong> tiene que ser mayor.</li>
+                <ul
+                  class="parsley-errors-list filled mb-2"
+                  id="parsley-id-7"
+                  v-if="$v.stockMax.$anyDirty && !$v.stockMax.minValue"
+                >
+                  <li class="parsley-required"
+                    >el <strong>Valor</strong> tiene que ser mayor.</li
+                  >
                 </ul>
               </div>
             </div>
 
-<div class="form-row mb-2">
+            <div class="form-row mb-2">
               <div class="">
-
                 <label for="product-price">
                   Ingresar Proveedor
                   <span class="text-danger">*</span>
                 </label>
                 <!-- eslint-disable-next-line -->
-<vue-bootstrap-typeahead
-    class="mb-2 " v-model="query" :data="proveedores"
-    :serializer="item => item.RazonSoc_Prov"
-    placeholder="Buscar Proveedores" @hit = "selectedProveedor = $event"
-  />
+                <vue-bootstrap-typeahead
+                  class="mb-2 "
+                  v-model="query"
+                  :data="proveedores"
+                  :serializer="(item) => item.RazonSoc_Prov"
+                  placeholder="Buscar Proveedores"
+                  @hit="selectedProveedor = $event"
+                />
 
-
-<label v-if="selectedProveedor && selectedProveedor.RazonSoc_Prov" for="selectedProveedor"> <strong>RUC: </strong>{{ selectedProveedor.RUC }}   /  <strong>Razon Social: </strong>{{ selectedProveedor.RazonSoc_Prov }} </label>
- <ul class="parsley-errors-list filled mb-2" id="parsley-id-7" v-if="$v.query.$anyDirty && !provIndex" >
+                <label
+                  v-if="selectedProveedor && selectedProveedor.RazonSoc_Prov"
+                  for="selectedProveedor"
+                >
+                  <strong>RUC: </strong>{{ selectedProveedor.RUC }} /
+                  <strong>Razon Social: </strong
+                  >{{ selectedProveedor.RazonSoc_Prov }}
+                </label>
+                <ul
+                  class="parsley-errors-list filled mb-2"
+                  id="parsley-id-7"
+                  v-if="$v.query.$anyDirty && !provIndex"
+                >
                   <li class="parsley-required">Requerido.</li>
                 </ul>
-
-                  </div>
+              </div>
             </div>
 
-
-            <button type="submit" class="btn btn-primary waves-effect waves-light mt-3">Ingresar Producto</button>
+            <button
+              type="submit"
+              class="btn btn-primary waves-effect waves-light mt-3"
+              >Ingresar Producto</button
+            >
           </form>
         </div>
-
-
       </div>
       <!-- end card-box -->
     </div>
@@ -229,27 +283,25 @@
   <!-- end row -->
 </template>
 
-
 <script>
 import axios from 'axios'
 
-import { required, minValue } from 'vuelidate/lib/validators'// minLength
+import { required, minValue } from 'vuelidate/lib/validators' // minLength
 import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
 
 const API_URL = 'http://localhost:3010/products/getproveedores?razSoc=:query'
 
-
 export default {
   name: 'prod-insert',
   components: {
-    VueBootstrapTypeahead
+    VueBootstrapTypeahead,
   },
   data() {
     return {
       //   items: navigationRoutes.routes,
       submitStatus: null,
       categories: [],
-    //   medCantidad: 0;
+      //   medCantidad: 0;
       selectedCat: null,
       productName: '',
       productDescription: '',
@@ -265,7 +317,7 @@ export default {
 
       query: '',
       selectedProveedor: null,
-      proveedores: []
+      proveedores: [],
     }
   },
   validations: {
@@ -305,84 +357,78 @@ export default {
     },
     query: {
       required,
-    }
-
+    },
   },
-    // age: {
-    //   between: between(20, 30)
-    // },
-  methods:  {
-      checkForm:function(e) {
-        e.preventDefault();
-        console.log('submit!')
-        this.$v.$touch()
-        if (this.$v.$invalid) {
-            this.submitStatus = 'ERROR'
-        } else {
-                this.submitStatus = 'PENDING'
-                axios.post('http://localhost:3010/products/insert', {
-                "product": {
-                    "Nom_Medi": this.productName,
-                    "Desc_Medi": this.productDescription,
-                    "Cant_Medi": 2, // ! fix this
-                    "Precio_Com": this.precioCompra,
-                    "Precio_Unitario": this.precioVenta,
-                    "RazonSoc_Prov": "product.RazonSoc_Prov",// ! fix this
-                    "Fecha_Ing": this.dateIng,
-                    "Fecha_Ven": this.dateven,
-                    "Stock_Min": this.stockMin,
-                    "Stock_Max": this.stockMax,
-                    "Pres_Medi": this.medPrescripcion,
-                    "T01FCATId": this.selectedCat,
-                    "T01FPROId": this.selectedProveedor.id
-                }
-            })
-            .then((response) => {
-                console.dir(response)
-                setTimeout(( response ) => {
-                  console.log('ingresado')
-            //   currentObj.output = response
-                    this.submitStatus = 'OK'
-                    // Object.assign(this.$data, this.$options.data())
-                    // console.Object
-                    this.selectedCat= null
-                    this.productName= ''
-                    this.productDescription = ''
-                    this.dateIng = new Date()
-                    this.dateven = new Date()
-                    this.precioCompra = 0
-                    this.precioVenta = 0
-                    this.stockMin = 0
-                    this.stockMax = 0
-                    this.medPrescripcion = 0
-                    this.$v.$reset()
-                }, 500)
-                  // this.submitStatus = 'OK'
+  // age: {
+  //   between: between(20, 30)
+  // },
+  methods: {
+    checkForm: function(e) {
+      e.preventDefault()
+      console.log('submit!')
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'PENDING'
+        axios
+          .post('http://localhost:3010/products/insert', {
+            product: {
+              Nom_Medi: this.productName,
+              Desc_Medi: this.productDescription,
+              Cant_Medi: 2, // ! fix this
+              Precio_Com: this.precioCompra,
+              Precio_Unitario: this.precioVenta,
+              RazonSoc_Prov: 'product.RazonSoc_Prov', // ! fix this
+              Fecha_Ing: this.dateIng,
+              Fecha_Ven: this.dateven,
+              Stock_Min: this.stockMin,
+              Stock_Max: this.stockMax,
+              Pres_Medi: this.medPrescripcion,
+              T01FCATId: this.selectedCat,
+              T01FPROId: this.selectedProveedor.id,
+            },
+          })
+          .then((response) => {
+            console.dir(response)
+            setTimeout((response) => {
+              console.log('ingresado')
+              //   currentObj.output = response
+              this.submitStatus = 'OK'
+              // Object.assign(this.$data, this.$options.data())
+              // console.Object
+              this.selectedCat = null
+              this.productName = ''
+              this.productDescription = ''
+              this.dateIng = new Date()
+              this.dateven = new Date()
+              this.precioCompra = 0
+              this.precioVenta = 0
+              this.stockMin = 0
+              this.stockMax = 0
+              this.medPrescripcion = 0
+              this.$v.$reset()
+            }, 500)
+            // this.submitStatus = 'OK'
             //   currentObj.output = response.data;
-            })
-            .catch((err) => {
-                if (err.response && err.response.data){
-                    console.log(err.response.data)
-                }
-                this.submitStatus = 'ERROR'
-                console.log('error x');
-                console.log({err});
-            });
-
-
-
-        }
-
-
+          })
+          .catch((err) => {
+            if (err.response && err.response.data) {
+              console.log(err.response.data)
+            }
+            this.submitStatus = 'ERROR'
+            console.log('error x')
+            console.log({ err })
+          })
+      }
     },
     async getAddresses(query) {
-      const res = await fetch(API_URL.replace(':query', query));
+      const res = await fetch(API_URL.replace(':query', query))
       const suggestions = await res.json()
 
       this.addresses = suggestions
       console.dir(this.addresses)
-    }
-
+    },
   },
   created: function() {
     axios
@@ -397,32 +443,30 @@ export default {
   },
   watch: {
     query(newQuery) {
-      axios.get(`http://localhost:3010/products/getproveedores?razSoc=${newQuery}`)
+      axios
+        .get(`http://localhost:3010/products/getproveedores?razSoc=${newQuery}`)
         .then((res) => {
-                    console.log("TCL: query -> res.data", res.data)
+          console.log('TCL: query -> res.data', res.data)
           this.proveedores = res.data
-
         })
-    }
+    },
   },
   filters: {
     stringify(value) {
       return JSON.stringify(value, null, 2)
-    }
+    },
   },
-  computed:{
+  computed: {
     provIndex: {
-      get:function () {
+      get: function() {
         if (this.selectedProveedor && this.selectedProveedor.id) {
           return this.selectedProveedor.id
         } else {
           return null
         }
-    }
-    }
-
-
-  }
+      },
+    },
+  },
 
   // a computed getter
 }

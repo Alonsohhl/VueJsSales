@@ -1,4 +1,5 @@
 <script>
+// !* TOP BAR  PARA EDICION
 import { authComputed } from '@state/helpers'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
@@ -36,16 +37,9 @@ export default {
         <form class="app-search">
           <div class="app-search-box">
             <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Search..."
-              />
+              <input type="text" class="form-control" placeholder="Buscar..." />
               <div class="input-group-append">
-                <button
-                  class="btn"
-                  type="submit"
-                >
+                <button class="btn" type="submit">
                   <i class="fe-search"></i>
                 </button>
               </div>
@@ -54,41 +48,29 @@ export default {
         </form>
       </li>
 
-      <b-nav-item-dropdown
-        right
-        class="notification-list"
-      >
+      <b-nav-item-dropdown right class="notification-list">
         <template
           slot="button-content"
           class="nav-link dropdown-toggle  waves-effect waves-light"
         >
           <i class="fe-bell noti-icon"></i>
-          <span class="badge badge-danger rounded-circle noti-icon-badge">9</span>
+          <span class="badge badge-danger rounded-circle noti-icon-badge"
+            >9</span
+          >
         </template>
 
-        <b-dropdown-text
-          href="#"
-          class="dropdown-item noti-title"
-        >
+        <b-dropdown-text href="#" class="dropdown-item noti-title">
           <h5 class="m-0">
             <span class="float-right">
-              <a
-                href=""
-                class="text-dark"
-              >
+              <a href="" class="text-dark">
                 <small>Clear All</small>
-              </a> </span>Notification
+              </a> </span
+            >Notification
           </h5>
         </b-dropdown-text>
 
-        <b-dropdown-text
-          href="#"
-          class="p-0"
-        >
-          <VuePerfectScrollbar
-            v-once
-            class="noti-scroll"
-          >
+        <b-dropdown-text href="#" class="p-0">
+          <VuePerfectScrollbar v-once class="noti-scroll">
             <a
               href="javascript:void(0);"
               class="dropdown-item notify-item active"
@@ -98,7 +80,8 @@ export default {
                   src="@assets/images/users/user-1.jpg"
                   class="img-fluid rounded-circle"
                   alt=""
-                /> </div>
+                />
+              </div>
               <p class="notify-details">Cristina Pride</p>
               <p class="text-muted mb-0 user-msg">
                 <small>Hi, How are you? What about our next meeting</small>
@@ -106,29 +89,25 @@ export default {
             </a>
 
             <!-- item-->
-            <a
-              href="javascript:void(0);"
-              class="dropdown-item notify-item"
-            >
+            <a href="javascript:void(0);" class="dropdown-item notify-item">
               <div class="notify-icon bg-primary">
                 <i class="mdi mdi-comment-account-outline"></i>
               </div>
-              <p class="notify-details">Caleb Flakelar commented on Admin
+              <p class="notify-details"
+                >Caleb Flakelar commented on Admin
                 <small class="text-muted">1 min ago</small>
               </p>
             </a>
 
             <!-- item-->
-            <a
-              href="javascript:void(0);"
-              class="dropdown-item notify-item"
-            >
+            <a href="javascript:void(0);" class="dropdown-item notify-item">
               <div class="notify-icon">
                 <img
                   src="@assets/images/users/user-4.jpg"
                   class="img-fluid rounded-circle"
                   alt=""
-                /> </div>
+                />
+              </div>
               <p class="notify-details">Karen Robinson</p>
               <p class="text-muted mb-0 user-msg">
                 <small>Wow ! this admin looks good and awesome design</small>
@@ -136,40 +115,34 @@ export default {
             </a>
 
             <!-- item-->
-            <a
-              href="javascript:void(0);"
-              class="dropdown-item notify-item"
-            >
+            <a href="javascript:void(0);" class="dropdown-item notify-item">
               <div class="notify-icon bg-warning">
                 <i class="mdi mdi-account-plus"></i>
               </div>
-              <p class="notify-details">New user registered.
+              <p class="notify-details"
+                >New user registered.
                 <small class="text-muted">5 hours ago</small>
               </p>
             </a>
 
             <!-- item-->
-            <a
-              href="javascript:void(0);"
-              class="dropdown-item notify-item"
-            >
+            <a href="javascript:void(0);" class="dropdown-item notify-item">
               <div class="notify-icon bg-info">
                 <i class="mdi mdi-comment-account-outline"></i>
               </div>
-              <p class="notify-details">Caleb Flakelar commented on Admin
+              <p class="notify-details"
+                >Caleb Flakelar commented on Admin
                 <small class="text-muted">4 days ago</small>
               </p>
             </a>
 
             <!-- item-->
-            <a
-              href="javascript:void(0);"
-              class="dropdown-item notify-item"
-            >
+            <a href="javascript:void(0);" class="dropdown-item notify-item">
               <div class="notify-icon bg-secondary">
                 <i class="mdi mdi-heart"></i>
               </div>
-              <p class="notify-details">Carlos Crouch liked
+              <p class="notify-details"
+                >Carlos Crouch liked
                 <b>Admin</b>
                 <small class="text-muted">13 days ago</small>
               </p>
@@ -199,7 +172,7 @@ export default {
               class="rounded-circle"
             />
             <span class="pro-user-name ml-1">
-              {{user ? user.name : ''}} <i class="mdi mdi-chevron-down"></i>
+              {{ user ? user.name : '' }} <i class="mdi mdi-chevron-down"></i>
             </span>
           </div>
         </template>
@@ -238,25 +211,14 @@ export default {
 
     <!-- LOGO -->
     <div class="logo-box">
-      <a
-        href="index.html"
-        class="logo text-center"
-      >
+      <a href="/" class="logo text-center">
         <span class="logo-lg">
-          <img
-            src="@assets/images/logo-light.png"
-            alt=""
-            height="18"
-          />
+          <img src="@assets/images/logo-light.png" alt="" height="18" />
           <!-- <span class="logo-lg-text-light">Xeria</span> -->
         </span>
         <span class="logo-sm">
           <!-- <span class="logo-sm-text-dark">X</span> -->
-          <img
-            src="@assets/images/logo-sm.png"
-            alt=""
-            height="24"
-          />
+          <img src="@assets/images/logo-sm.png" alt="" height="24" />
         </span>
       </a>
     </div>
@@ -271,12 +233,9 @@ export default {
         </button>
       </li>
 
-      <b-nav-item-dropdown
-        class="d-none d-lg-block"
-        right
-      >
+      <b-nav-item-dropdown class="d-none d-lg-block" right>
         <template slot="button-content">
-          Create New
+          Accesos directos
           <i class="mdi mdi-chevron-down"></i>
         </template>
         <b-dropdown-item href="#">

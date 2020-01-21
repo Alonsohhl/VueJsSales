@@ -1,5 +1,6 @@
 {
   "title": "Info-Farma",
   "description": "Sistema de ventas",
-  "urlBase": "http://localhost:3010/"
+  "urlBase": "http://localhost:3010/",
+  "API_URL": "http://localhost:3010/"
 }

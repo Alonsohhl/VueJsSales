@@ -207,7 +207,29 @@ export default {
             </ul>
           </li>
           <li>
-            <router-link tag="a" to="/dashboard2">Clientes</router-link>
+            <a href="javascript: void(0);" class="has-dropdown">
+              <i class="fe-users" style="margin: 0 10px 0 3px"></i>
+              <span>Usuarios</span>
+              <span class="menu-arrow"></span>
+            </a>
+            <ul class="nav-third-level nav collapse" aria-expanded="true">
+              <li>
+                <router-link
+                  tag="a"
+                  :to="{ name: 'clientes' }"
+                  class="side-nav-link-ref"
+                  >Clientes</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  tag="a"
+                  :to="{ name: 'sisUser' }"
+                  class="side-nav-link-ref"
+                  >Facturadores</router-link
+                >
+              </li>
+            </ul>
           </li>
           <li>
             <router-link tag="a" to="/dashboard2">Proveedores</router-link>

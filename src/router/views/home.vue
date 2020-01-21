@@ -29,10 +29,7 @@ export default {
 
 <template>
   <Layout>
-    <PageHeader
-      :title="title"
-      :items="items"
-    />
+    <PageHeader :title="title" :items="items" />
 
     <!-- <div class="row">
       <div class="col-md-12">
@@ -41,6 +38,7 @@ export default {
         </b-card>
       </div>
     </div> -->
-    <router-view/>
+
+    <router-view />
   </Layout>
 </template>

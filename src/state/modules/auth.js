@@ -6,7 +6,7 @@ export const state = {
 
 export const mutations = {
   SET_CURRENT_USER(state, newValue) {
-    console.dir('.'+newValue)
+    console.dir('.' + newValue)
     console.dir(newValue)
     state.currentUser = newValue
     saveState('auth.currentUser', newValue)
@@ -33,33 +33,34 @@ export const actions = {
   logIn({ commit, dispatch, getters }, { username, password } = {}) {
     if (getters.loggedIn) return dispatch('validate')
 
-    return axios
-      // .post('/api/session', { username, password })
-      .post('http://localhost:3010/users/login',
-      { "user": {"Nom_Usu": username, "Pass_Usu": password} }
-      )
-      .then((response) => {
-        // const user = response.data.user
-        const user =  {
-           id: 1,
-          // username: response.data.user.user,
-          name: response.data.user.user,
-          //  token: "response.data.user.token",
-          // token: 'valid-token-for-admin',
-          token: response.data.user.token,
-          email: response.data.user.email
-        }
-        console.log('Exito');
-        console.dir(response.data);
-        console.dir(user);
-        commit('SET_CURRENT_USER', user)
-        return user
-      })
+    return (
+      axios
+        // .post('/api/session', { username, password })
+        .post('http://localhost:3010/users/login', {
+          user: { Nom_Usu: username, Pass_Usu: password },
+        })
+        .then((response) => {
+          // const user = response.data.user
+          const user = {
+            id: response.data.user.id,
+            // username: response.data.user.user,
+            name: response.data.user.user,
+            //  token: "response.data.user.token",
+            // token: 'valid-token-for-admin',
+            token: response.data.user.token,
+            email: response.data.user.email,
+          }
+          console.log('Exito')
+          console.dir(response.data)
+          console.dir(user)
+          commit('SET_CURRENT_USER', user)
+          return user
+        })
+    )
   },
 
   // Logs out the current user.
   logOut({ commit }) {
-    console.log('JOD');
     commit('SET_CURRENT_USER', null)
   },
 
@@ -79,34 +80,35 @@ export const actions = {
   resetPassword({ commit, dispatch, getters }, { email } = {}) {
     if (getters.loggedIn) return dispatch('validate')
 
-    return axios
-      .post('/api/reset', { email})
-      .then((response) => {
-        const message = response.data
-        return message
-      })
+    return axios.post('/api/reset', { email }).then((response) => {
+      const message = response.data
+      return message
+    })
   },
 
   // Validates the current user's token and refreshes it
   // with new data from the API.
   validate({ commit, state }) {
     if (!state.currentUser) return Promise.resolve(null)
-    return axios
-      // .get('/api/session')
-      .get('http://localhost:3010/users/session',{ headers: { Authorization: 'Token '+ state.currentUser.token } })
-      .then((response) => {
-        const user = response.data
-        // commit('SET_CURRENT_USER', user)
-        return user
-      })
-      // *Todo Continuar aqui despues del login queda como current user OK eso no esta bien
-      .catch((error) => {
-        if (error.response && error.response.status === 401) {
-
-        commit('SET_CURRENT_USER', null)
-        }
-        return null
-      })
+    return (
+      axios
+        // .get('/api/session')
+        .get('http://localhost:3010/users/session', {
+          headers: { Authorization: 'Token ' + state.currentUser.token },
+        })
+        .then((response) => {
+          const user = response.data
+          // commit('SET_CURRENT_USER', user)
+          return user
+        })
+        // *Todo Continuar aqui despues del login queda como current user OK eso no esta bien
+        .catch((error) => {
+          if (error.response && error.response.status === 401) {
+            commit('SET_CURRENT_USER', null)
+          }
+          return null
+        })
+    )
   },
 }
 
@@ -127,6 +129,6 @@ function setDefaultAuthHeaders(state) {
   //   ? state.currentUser.token
   //   : ''
   axios.defaults.headers.common.Authorization = state.currentUser
-  ? state.currentUser.token
-  : ''
+    ? state.currentUser.token
+    : ''
 }
