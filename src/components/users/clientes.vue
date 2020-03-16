@@ -17,25 +17,6 @@
                 data-overlaycolor="#38414a"
                 >Agregar Cliente</router-link
               >
-
-              <b-modal id="modal-1" title="BootstrapVue">
-                <p class="my-4">Hello from modal!</p>
-              </b-modal>
-
-              <!-- <div class="col-sm-8">
-                <div class="text-sm-right">
-                  <button type="button" class="btn btn-success mb-2 mr-1"
-                    ><i class="mdi mdi-settings"></i
-                  ></button>
-                  <button type="button" class="btn btn-light mb-2 mr-1"
-                    >Import</button
-                  >
-                  <button type="button" class="btn btn-light mb-2"
-                    >Export</button
-                  >
-                </div>
-              </div> -->
-              <!-- end col-->
             </div>
 
             <div class="table-responsive">

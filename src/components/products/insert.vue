@@ -8,31 +8,31 @@
           <!-- <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p> -->
           <div class="d-flex justify-content-center">
             <div
+              v-show="submitStatus === 'PENDING'"
               class="spinner-border text-success m-2 avatar-lg"
               role="status"
-              v-show="submitStatus === 'PENDING'"
             ></div>
           </div>
           <div
+            v-show="submitStatus === 'OK'"
             class="alert alert-success"
             role="alert"
-            v-show="submitStatus === 'OK'"
           >
             <i class="mdi mdi-check-all mr-2"></i> Producto ingresado
             <strong>correctamente!</strong>
           </div>
 
           <form
-            @submit="checkForm"
             v-show="submitStatus !== 'PENDING'"
             action="/something"
             method="post"
             :disabled="0"
+            @submit="checkForm"
           >
             <div
+              v-if="submitStatus === 'ERROR'"
               class="alert alert-danger bg-danger text-white border-0"
               role="alert"
-              v-if="submitStatus === 'ERROR'"
             >
               Los campos no son <strong>validos</strong>
             </div>
@@ -44,9 +44,9 @@
                 </label>
                 <!-- <select id="inputState" class="form-control">  @change="onChangeCat"  -->
                 <select
+                  id="inputState"
                   v-model.trim="$v.selectedCat.$model"
                   name="city"
-                  id="inputState"
                   class="form-control"
                   tabindex="12"
                 >
@@ -59,9 +59,9 @@
                   >
                 </select>
                 <ul
-                  class="parsley-errors-list filled mb-2"
-                  id="parsley-id-7"
                   v-if="$v.selectedCat.$anyDirty && !$v.selectedCat.required"
+                  id="parsley-id-7"
+                  class="parsley-errors-list filled mb-2"
                 >
                   <li class="parsley-required">Requerido.</li>
                 </ul>
@@ -75,16 +75,16 @@
                 </label>
 
                 <input
-                  v-model.trim="$v.productName.$model"
                   id="product-names"
+                  v-model.trim="$v.productName.$model"
                   type="text"
                   class="form-control"
                   placeholder="e.g : Medicamento"
                 />
                 <ul
-                  class="parsley-errors-list filled mb-2"
-                  id="parsley-id-7"
                   v-if="$v.productName.$anyDirty && !$v.productName.required"
+                  id="parsley-id-7"
+                  class="parsley-errors-list filled mb-2"
                 >
                   <li class="parsley-required">Requerido.</li>
                 </ul>
@@ -99,9 +99,9 @@
                   <span class="text-danger">*</span>
                 </label>
                 <textarea
+                  id="product-description"
                   v-model="productDescription"
                   class="form-control"
-                  id="product-description"
                   rows="3"
                   placeholder="Porfavor ingresar descripción"
                 ></textarea>
@@ -147,16 +147,16 @@
                   <span class="text-danger">*</span>
                 </label>
                 <input
+                  id="product-price"
                   v-model.trim="$v.precioCompra.$model"
                   type="number"
                   class="form-control"
-                  id="product-price"
                   placeholder="Ingrese cantidad"
                 />
                 <ul
-                  class="parsley-errors-list filled mb-2"
-                  id="parsley-id-7"
                   v-if="$v.precioCompra.$anyDirty && !$v.precioCompra.minValue"
+                  id="parsley-id-7"
+                  class="parsley-errors-list filled mb-2"
                 >
                   <li class="parsley-required"
                     >el <strong>Valor</strong> tiene que ser mayor.</li
@@ -169,16 +169,16 @@
                   <span class="text-danger">*</span>
                 </label>
                 <input
+                  id="product-price"
                   v-model.trim="$v.precioVenta.$model"
                   type="number"
                   class="form-control"
-                  id="product-price"
                   placeholder="Ingrese cantidad"
                 />
                 <ul
-                  class="parsley-errors-list filled mb-2"
-                  id="parsley-id-7"
                   v-if="$v.precioVenta.$anyDirty && !$v.precioVenta.minValue"
+                  id="parsley-id-7"
+                  class="parsley-errors-list filled mb-2"
                 >
                   <li class="parsley-required"
                     >el <strong>Valor</strong> tiene que ser mayor.</li
@@ -194,16 +194,16 @@
                   <span class="text-danger">*</span>
                 </label>
                 <input
+                  id="product-price"
                   v-model.trim="$v.stockMin.$model"
                   type="number"
                   class="form-control"
-                  id="product-price"
                   placeholder="Ingrese cantidad"
                 />
                 <ul
-                  class="parsley-errors-list filled mb-2"
-                  id="parsley-id-7"
                   v-if="$v.stockMin.$anyDirty && !$v.stockMin.minValue"
+                  id="parsley-id-7"
+                  class="parsley-errors-list filled mb-2"
                 >
                   <li class="parsley-required"
                     >el <strong>Valor</strong> tiene que ser mayor.</li
@@ -216,16 +216,16 @@
                   <span class="text-danger">*</span>
                 </label>
                 <input
+                  id="product-price"
                   v-model.trim="$v.stockMax.$model"
                   type="number"
                   class="form-control"
-                  id="product-price"
                   placeholder="Ingrese cantidad"
                 />
                 <ul
-                  class="parsley-errors-list filled mb-2"
-                  id="parsley-id-7"
                   v-if="$v.stockMax.$anyDirty && !$v.stockMax.minValue"
+                  id="parsley-id-7"
+                  class="parsley-errors-list filled mb-2"
                 >
                   <li class="parsley-required"
                     >el <strong>Valor</strong> tiene que ser mayor.</li
@@ -242,8 +242,8 @@
                 </label>
                 <!-- eslint-disable-next-line -->
                 <vue-bootstrap-typeahead
-                  class="mb-2 "
                   v-model="query"
+                  class="mb-2 "
                   :data="proveedores"
                   :serializer="(item) => item.RazonSoc_Prov"
                   placeholder="Buscar Proveedores"
@@ -259,9 +259,9 @@
                   >{{ selectedProveedor.RazonSoc_Prov }}
                 </label>
                 <ul
-                  class="parsley-errors-list filled mb-2"
-                  id="parsley-id-7"
                   v-if="$v.query.$anyDirty && !provIndex"
+                  id="parsley-id-7"
+                  class="parsley-errors-list filled mb-2"
                 >
                   <li class="parsley-required">Requerido.</li>
                 </ul>
@@ -292,7 +292,7 @@ import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
 const API_URL = 'http://localhost:3010/products/getproveedores?razSoc=:query'
 
 export default {
-  name: 'prod-insert',
+  name: 'ProdInsert',
   components: {
     VueBootstrapTypeahead,
   },
@@ -358,6 +358,38 @@ export default {
     query: {
       required,
     },
+  },
+  computed: {
+    provIndex: {
+      get: function() {
+        if (this.selectedProveedor && this.selectedProveedor.id) {
+          return this.selectedProveedor.id
+        } else {
+          return null
+        }
+      },
+    },
+  },
+  watch: {
+    query(newQuery) {
+      axios
+        .get(`http://localhost:3010/products/getproveedores?razSoc=${newQuery}`)
+        .then((res) => {
+          console.log('TCL: query -> res.data', res.data)
+          this.proveedores = res.data
+        })
+    },
+  },
+  created: function() {
+    axios
+      .get('http://localhost:3010/products/getcat/10')
+      .then((response) => {
+        console.log('Cat Loaded')
+        this.categories = response.data
+      })
+      .catch(function(error) {
+        console.log('error con Categorias ' + error)
+      })
   },
   // age: {
   //   between: between(20, 30)
@@ -430,41 +462,9 @@ export default {
       console.dir(this.addresses)
     },
   },
-  created: function() {
-    axios
-      .get('http://localhost:3010/products/getcat/10')
-      .then((response) => {
-        console.log('Cat Loaded')
-        this.categories = response.data
-      })
-      .catch(function(error) {
-        console.log('error con Categorias ' + error)
-      })
-  },
-  watch: {
-    query(newQuery) {
-      axios
-        .get(`http://localhost:3010/products/getproveedores?razSoc=${newQuery}`)
-        .then((res) => {
-          console.log('TCL: query -> res.data', res.data)
-          this.proveedores = res.data
-        })
-    },
-  },
   filters: {
     stringify(value) {
       return JSON.stringify(value, null, 2)
-    },
-  },
-  computed: {
-    provIndex: {
-      get: function() {
-        if (this.selectedProveedor && this.selectedProveedor.id) {
-          return this.selectedProveedor.id
-        } else {
-          return null
-        }
-      },
     },
   },
 

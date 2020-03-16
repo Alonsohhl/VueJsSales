@@ -224,9 +224,9 @@ export default {
               <li>
                 <router-link
                   tag="a"
-                  :to="{ name: 'sisUser' }"
+                  :to="{ name: 'adminUserDisplay' }"
                   class="side-nav-link-ref"
-                  >Facturadores</router-link
+                  >Administradores</router-link
                 >
               </li>
             </ul>

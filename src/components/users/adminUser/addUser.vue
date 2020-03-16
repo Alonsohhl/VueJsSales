@@ -241,7 +241,7 @@
 </template>
 
 <script>
-import vueAlerts from '../basicElements/alert'
+import vueAlerts from '@src/components/basicElements/alert'
 import axios from 'axios'
 import { API_URL } from '@src/app.config'
 
@@ -277,7 +277,7 @@ export default {
         },
       },
       labels: {
-        title: 'Ingresar Cliente',
+        title: 'Ingresar Administrador',
       },
 
       show: true,

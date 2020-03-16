@@ -1,135 +1,22 @@
 <template>
   <div class="container-fluid">
-    <h2 class="header-title mb-4">Facturadores</h2>
+    <h2 class="header-title mb-4">Menu Administradores</h2>
 
     <vueAlerts :alerts="alerts"></vueAlerts>
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="row mb-2">
-              <!-- -Link- -->
-              <router-link
-                tag="a"
-                class="btn btn-danger waves-effect waves-light"
-                :to="{ name: 'addCliente', params: { mode: 'ING' } }"
-                data-animation="fadein"
-                data-plugin="custommodal"
-                data-overlaycolor="#38414a"
-                >Agregar Facturador</router-link
-              >
-            </div>
-
-            <div class="table-responsive">
-              <b-table
-                id="my-table"
-                small
-                :items="UsersRawData"
-                :fields="fields"
-                responsive="sm"
-                :busy="tableCatIsBusy"
-                class="table table-centered table-striped"
-              >
-                <template v-slot:table-busy>
-                  <div class="text-center text-success my-2">
-                    <b-spinner class="align-middle"></b-spinner>
-                    <strong>Loading...</strong>
-                  </div>
-                </template>
-
-                <template v-slot:cell(name)="row">
-                  {{ row.item.Nom_Cli }} {{ row.item.App_Cli }}
-                </template>
-
-                <template v-slot:cell(Desc_Cat)="row">
-                  <b-form-input
-                    v-if="UsersRawData[row.index].actionOptions === 'editing'"
-                    id="range-1"
-                    v-model="row.item.Desc_Cat"
-                    type="text"
-                  ></b-form-input>
-                  <div v-else>
-                    {{ row.item.Desc_Cat }}
-                  </div>
-                  <!-- <input class="tabledit-input form-control form-control-sm" type="text" name="col1" value="Desc_Cat" style=""> -->
-                </template>
-
-                <template v-slot:cell(Acciones)="row">
-                  <b-button-group
-                    v-if="UsersRawData[row.index].actionOptions === 'default'"
-                  >
-                    <!--
-
-              > -->
-                    <router-link
-                      tag="b-button"
-                      class="btn btn-success waves-effect waves-light"
-                      variant="outline-success"
-                      :to="{
-                        name: 'clientesDetalle',
-                        params: {
-                          id: UsersRawData[row.index].id,
-                          mode: 'UPDATE',
-                        },
-                      }"
-                      data-animation="fadein"
-                      data-plugin="custommodal"
-                      data-overlaycolor="#38414a"
-                      ><span class="mdi mdi-8px mdi-pencil"></span
-                    ></router-link>
-
-                    <b-button
-                      variant="outline-danger"
-                      type="button"
-                      @click="deleteCategory(row.index)"
-                    >
-                      <span class="mdi mdi-8px mdi-delete"></span>
-                    </b-button>
-                  </b-button-group>
-                  <b-button-group
-                    v-if="UsersRawData[row.index].actionOptions === 'editing'"
-                  >
-                    <b-button
-                      variant="outline-success"
-                      type="button"
-                      @click="updateCategory(row.index)"
-                    >
-                      Actualizar
-                      <span class="mdi mdi-8px mdi-content-save"></span>
-                    </b-button>
-
-                    <b-button
-                      variant="outline-danger"
-                      type="button"
-                      @click="toggleRow(row.index)"
-                    >
-                      cancelar
-                      <span class="mdi mdi-8px mdi-close"></span>
-                    </b-button>
-                  </b-button-group>
-
-                  <!-- <button type="button" class="btn btn-outline-success btn-rounded waves-effect waves-light" style=""><span class="mdi mdi-8px mdi-pencil"></span></button> -->
-                </template>
-              </b-table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <router-view />
     <!-- end row -->
   </div>
 </template>
 
 <script>
-import vueAlerts from '../basicElements/alert'
+import vueAlerts from '@src/components/basicElements/alert'
 import axios from 'axios'
 import { required } from 'vuelidate/lib/validators'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss' // minLength
 import appConfig from '@src/app.config' // configuracion file
 
-let catController = require('./categoriesHelpers')
+let catController = require('@src/components/users/adminUser/adminUserHelper')
 
 export default {
   name: 'ProdInsert',
@@ -325,3 +212,4 @@ export default {
   },
 }
 </script>
+template

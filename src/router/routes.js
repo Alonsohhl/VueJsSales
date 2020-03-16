@@ -52,13 +52,6 @@ export default [
             component: () => import('../components/sales/invoice'),
             // default: true,
           },
-          // {
-          //   name: 'mainProd',
-          //   path: 'mainProd',
-          //   // component: () => import('../components/products/main'),
-          //   component: () => lazyLoadView(import('../components/products/main')),
-          //   // default: true,
-          // }
         ],
       },
       {
@@ -70,33 +63,39 @@ export default [
             name: 'clientes',
             path: 'clientes',
             component: () => import('../components/users/clientes'),
-            // default: true,
+            default: true,
           },
           {
             name: 'clientesDetalle',
             path: 'clientes/:id',
             component: () => import('../components/users/addCliente'),
-            // default: true,
           },
           {
             name: 'addCliente',
-            path: 'ingresarCliente',
+            path: 'ingresarCliente/',
             component: () => import('../components/users/addCliente'),
-            // props: { mode: 'ING' },
           },
           {
-            name: 'sisUser',
-            path: 'sisUsuarios',
-            component: () => import('../components/users/sisUser'),
-            // props: { mode: 'ING' },
+            name: 'sisUsuarios',
+            path: 'admin',
+            component: () =>
+              import('../components/users/adminUser/userDashboard'),
+            children: [
+              {
+                name: 'adminUserDisplay',
+                path: '',
+                component: () =>
+                  import('../components/users/adminUser/adminUserDisplay'),
+                default: true,
+              },
+              {
+                name: 'addUserAdmin',
+                path: 'agregar',
+                component: () =>
+                  import('../components/users/adminUser/addUser'),
+              },
+            ],
           },
-          // {
-          //   name: 'mainProd',
-          //   path: 'mainProd',
-          //   // component: () => import('../components/products/main'),
-          //   component: () => lazyLoadView(import('../components/products/main')),
-          //   // default: true,
-          // }
         ],
       },
     ],
