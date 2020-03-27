@@ -57,7 +57,7 @@
     "weekstart": "^1.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "3.7.x",
+    "@vue/cli-plugin-babel": "^4.2.3",
     "@vue/cli-plugin-e2e-cypress": "3.7.x",
     "@vue/cli-plugin-eslint": "3.7.x",
     "@vue/cli-plugin-unit-jest": "3.7.x",
