@@ -30,7 +30,7 @@
               <template v-slot:table-busy>
                 <div class="text-center text-success my-2">
                   <b-spinner class="align-middle"></b-spinner>
-                  <strong>Loading...</strong>
+                  <strong>Cargando...</strong>
                 </div>
               </template>
 
@@ -53,21 +53,15 @@
               </template>
 
               <template v-slot:cell(Acciones)="row">
-                <b-button-group
-                  v-if="UsersRawData[row.index].actionOptions === 'default'"
-                >
-                  <!--
-
-              > -->
+                <b-button-group v-if="UsersRawData[row.index].actionOptions === 'default'">
                   <router-link
                     tag="b-button"
                     class="btn btn-success waves-effect waves-light"
                     variant="outline-success"
                     :to="{
-                      name: 'clientesDetalle',
+                      name: 'udpUserAdmin',
                       params: {
                         id: UsersRawData[row.index].id,
-                        mode: 'UPDATE',
                       },
                     }"
                     data-animation="fadein"
@@ -76,37 +70,21 @@
                     ><span class="mdi mdi-8px mdi-pencil"></span
                   ></router-link>
 
-                  <b-button
-                    variant="outline-danger"
-                    type="button"
-                    @click="deleteUser(row.index)"
-                  >
+                  <b-button id="deleteAdmin" variant="outline-danger" type="button" @click="deleteUser(row.index)">
                     <span class="mdi mdi-8px mdi-delete"></span>
                   </b-button>
                 </b-button-group>
-                <b-button-group
-                  v-if="UsersRawData[row.index].actionOptions === 'editing'"
-                >
-                  <b-button
-                    variant="outline-success"
-                    type="button"
-                    @click="updateCategory(row.index)"
-                  >
+                <!-- <b-button-group v-if="UsersRawData[row.index].actionOptions === 'editing'">
+                  <b-button variant="outline-success" type="button" @click="updateCategory(row.index)">
                     Actualizar
                     <span class="mdi mdi-8px mdi-content-save"></span>
                   </b-button>
 
-                  <b-button
-                    variant="outline-danger"
-                    type="button"
-                    @click="toggleRow(row.index)"
-                  >
+                  <b-button variant="outline-danger" type="button" @click="toggleRow(row.index)">
                     cancelar
                     <span class="mdi mdi-8px mdi-close"></span>
                   </b-button>
-                </b-button-group>
-
-                <!-- <button type="button" class="btn btn-outline-success btn-rounded waves-effect waves-light" style=""><span class="mdi mdi-8px mdi-pencil"></span></button> -->
+                </b-button-group> -->
               </template>
             </b-table>
           </div>
@@ -135,7 +113,7 @@ export default {
       alerts: [],
 
       fields: [
-        { key: 'Cod_EmpFar', label: 'Cod' },
+        { key: 'id', label: 'Cod' },
         { key: 'Dni_EmpFar', label: 'Dni' },
         { key: 'name', label: 'Nombre' },
         { key: 'Correo_EmpFar', label: 'Correo' },

@@ -2,11 +2,7 @@
   <div class="container-fluid">
     <vueAlerts :alerts="alerts"></vueAlerts>
     <div class="d-flex justify-content-center">
-      <div
-        v-show="submitStatus === 'PENDING'"
-        class="spinner-border text-success m-2 avatar-lg"
-        role="status"
-      ></div>
+      <div v-show="submitStatus === 'PENDING'" class="spinner-border text-success m-2 avatar-lg" role="status"></div>
     </div>
 
     <div class="row">
@@ -15,191 +11,103 @@
           <div class="card-body">
             <h2 class="header-title mb-4">{{ labels.title }}</h2>
             <b-form v-if="show" @submit.stop.prevent="onSubmit">
-              <b-form-group
-                id="input-group-Dni_Cli"
-                label="DNI"
-                label-for="input-Dni_Cli"
-              >
+              <b-form-group id="input-group-Dni_Cli" label="DNI" label-for="input-Dni_Cli">
                 <b-form-input
                   id="input-Dni_Cli"
                   v-model.trim="$v.form.Dni_Cli.$model"
                   type="text"
                   placeholder="Ingresar DNI del cliente"
                   aria-describedby="input-1-live-feedback"
-                  :state="
-                    $v.form.Dni_Cli.$dirty ? !$v.form.Dni_Cli.$error : null
-                  "
+                  :state="$v.form.Dni_Cli.$dirty ? !$v.form.Dni_Cli.$error : null"
                 ></b-form-input>
 
-                <ul
-                  v-if="$v.form.Dni_Cli.$anyError"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
-                  <li v-if="!$v.form.Dni_Cli.required" class="parsley-required"
-                    >Campo Requerido.</li
-                  >
-                  <li v-if="!$v.form.Dni_Cli.numeric" class="parsley-required"
-                    >Solo se aceptan numeros.</li
-                  >
-                  <li
-                    v-if="!$v.form.Dni_Cli.minLength"
-                    class="parsley-required"
-                  >
+                <ul v-if="$v.form.Dni_Cli.$anyError" id="parsley-id-7" class="parsley-errors-list filled mb-2">
+                  <li v-if="!$v.form.Dni_Cli.required" class="parsley-required">Campo Requerido.</li>
+                  <li v-if="!$v.form.Dni_Cli.numeric" class="parsley-required">Solo se aceptan numeros.</li>
+                  <li v-if="!$v.form.Dni_Cli.minLength" class="parsley-required">
                     Tiene que tener al menos
                     {{ $v.form.Dni_Cli.$params.minLength.min }} numeros.</li
                   >
-                  <li
-                    v-if="!$v.form.Dni_Cli.maxLength"
-                    class="parsley-required"
-                  >
+                  <li v-if="!$v.form.Dni_Cli.maxLength" class="parsley-required">
                     Tiene que tener al menos
                     {{ $v.form.Dni_Cli.$params.maxLength.max }} numeros.</li
                   >
                 </ul>
               </b-form-group>
-              <b-form-group
-                id="input-group-Nom_Cli"
-                label="Nombre:"
-                label-for="input-Nom_Cli"
-              >
+              <b-form-group id="input-group-Nom_Cli" label="Nombre:" label-for="input-Nom_Cli">
                 <b-form-input
                   id="input-Nom_Cli"
                   v-model.trim="$v.form.Nom_Cli.$model"
                   type="text"
                   placeholder="Ingresar Nombre de Cliente"
-                  :state="
-                    $v.form.Nom_Cli.$dirty ? !$v.form.Nom_Cli.$error : null
-                  "
+                  :state="$v.form.Nom_Cli.$dirty ? !$v.form.Nom_Cli.$error : null"
                 ></b-form-input>
-                <ul
-                  v-if="$v.form.Nom_Cli.$anyError"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
-                  <li v-if="!$v.form.Nom_Cli.required" class="parsley-required"
-                    >Campo Requerido.</li
-                  >
+                <ul v-if="$v.form.Nom_Cli.$anyError" id="parsley-id-7" class="parsley-errors-list filled mb-2">
+                  <li v-if="!$v.form.Nom_Cli.required" class="parsley-required">Campo Requerido.</li>
 
-                  <li
-                    v-if="!$v.form.Nom_Cli.minLength"
-                    class="parsley-required"
-                  >
+                  <li v-if="!$v.form.Nom_Cli.minLength" class="parsley-required">
                     Tiene que tener al menos
                     {{ $v.form.Nom_Cli.$params.minLength.min }} letras.</li
                   >
-                  <li
-                    v-if="!$v.form.Nom_Cli.maxLength"
-                    class="parsley-required"
-                  >
+                  <li v-if="!$v.form.Nom_Cli.maxLength" class="parsley-required">
                     Tiene que ser ser menor de
                     {{ $v.form.Nom_Cli.$params.maxLength.max }} letras</li
                   >
                 </ul>
               </b-form-group>
-              <b-form-group
-                id="input-group-App_Cli"
-                label="Apellido Paterno:"
-                label-for="input-App_Cli"
-              >
+              <b-form-group id="input-group-App_Cli" label="Apellido Paterno:" label-for="input-App_Cli">
                 <b-form-input
                   id="input-App_Cli"
                   v-model.trim="$v.form.App_Cli.$model"
                   type="text"
                   placeholder="Ingresar apellido paterno"
-                  :state="
-                    $v.form.App_Cli.$dirty ? !$v.form.App_Cli.$error : null
-                  "
+                  :state="$v.form.App_Cli.$dirty ? !$v.form.App_Cli.$error : null"
                 ></b-form-input>
-                <ul
-                  v-if="$v.form.App_Cli.$anyError"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
-                  <li v-if="!$v.form.App_Cli.required" class="parsley-required"
-                    >Campo Requerido.</li
-                  >
+                <ul v-if="$v.form.App_Cli.$anyError" id="parsley-id-7" class="parsley-errors-list filled mb-2">
+                  <li v-if="!$v.form.App_Cli.required" class="parsley-required">Campo Requerido.</li>
 
-                  <li
-                    v-if="!$v.form.App_Cli.minLength"
-                    class="parsley-required"
-                  >
+                  <li v-if="!$v.form.App_Cli.minLength" class="parsley-required">
                     Tiene que tener al menos
                     {{ $v.form.App_Cli.$params.minLength.min }} letras.</li
                   >
-                  <li
-                    v-if="!$v.form.App_Cli.maxLength"
-                    class="parsley-required"
-                  >
+                  <li v-if="!$v.form.App_Cli.maxLength" class="parsley-required">
                     Tiene que ser ser menor de
                     {{ $v.form.App_Cli.$params.maxLength.max }} letras.</li
                   >
                 </ul>
               </b-form-group>
-              <b-form-group
-                id="input-group-Apm_Cli"
-                label="Apellido Materno:"
-                label-for="input-Apm_Cli"
-              >
+              <b-form-group id="input-group-Apm_Cli" label="Apellido Materno:" label-for="input-Apm_Cli">
                 <b-form-input
                   id="input-Apm_Cli"
                   v-model.trim="$v.form.Apm_Cli.$model"
                   type="text"
                   placeholder="Ingresar Apellido materno"
-                  :state="
-                    $v.form.Apm_Cli.$dirty ? !$v.form.Apm_Cli.$error : null
-                  "
+                  :state="$v.form.Apm_Cli.$dirty ? !$v.form.Apm_Cli.$error : null"
                 ></b-form-input>
-                <ul
-                  v-if="$v.form.Apm_Cli.$anyError"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
-                  <li v-if="!$v.form.Apm_Cli.required" class="parsley-required"
-                    >Campo Requerido.</li
-                  >
+                <ul v-if="$v.form.Apm_Cli.$anyError" id="parsley-id-7" class="parsley-errors-list filled mb-2">
+                  <li v-if="!$v.form.Apm_Cli.required" class="parsley-required">Campo Requerido.</li>
 
-                  <li
-                    v-if="!$v.form.Apm_Cli.minLength"
-                    class="parsley-required"
-                  >
+                  <li v-if="!$v.form.Apm_Cli.minLength" class="parsley-required">
                     Tiene que tener al menos
                     {{ $v.form.Apm_Cli.$params.minLength.min }} letras.</li
                   >
-                  <li
-                    v-if="!$v.form.Apm_Cli.maxLength"
-                    class="parsley-required"
-                  >
+                  <li v-if="!$v.form.Apm_Cli.maxLength" class="parsley-required">
                     Tiene que ser ser menor de
                     {{ $v.form.Apm_Cli.$params.maxLength.max }} letras.</li
                   >
                 </ul>
               </b-form-group>
-              <b-form-group
-                id="input-group-Correo_Cli"
-                label="Email address:"
-                label-for="input-Correo_Cli"
-              >
+              <b-form-group id="input-group-Correo_Cli" label="Email address:" label-for="input-Correo_Cli">
                 <b-form-input
                   id="input-Correo_Cli"
                   v-model.trim="$v.form.Correo_Cli.$model"
                   type="email"
                   placeholder="Ingresar Correo Electronico"
                 ></b-form-input>
-                <ul
-                  v-if="$v.form.Correo_Cli.$anyError"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
-                  <li
-                    v-if="!$v.form.Correo_Cli.required"
-                    class="parsley-required"
-                    >Campo Requerido.</li
-                  >
+                <ul v-if="$v.form.Correo_Cli.$anyError" id="parsley-id-7" class="parsley-errors-list filled mb-2">
+                  <li v-if="!$v.form.Correo_Cli.required" class="parsley-required">Campo Requerido.</li>
 
-                  <li v-if="!$v.form.Correo_Cli.email" class="parsley-required">
-                    Tiene que ser un Email valido.</li
-                  >
+                  <li v-if="!$v.form.Correo_Cli.email" class="parsley-required"> Tiene que ser un Email valido.</li>
                 </ul>
               </b-form-group>
               <!-- <b-form-group
@@ -217,11 +125,7 @@
                 ></b-form-input>
               </b-form-group> -->
 
-              <b-form-group
-                id="input-group-Sexo_Cli"
-                label="Sexo:"
-                label-for="input-Sexo_Cli"
-              >
+              <b-form-group id="input-group-Sexo_Cli" label="Sexo:" label-for="input-Sexo_Cli">
                 <b-form-select
                   id="input-Sexo_Cli"
                   v-model="form.Sexo_Cli.value"
@@ -245,13 +149,7 @@ import vueAlerts from '@src/components/basicElements/alert'
 import axios from 'axios'
 import { API_URL } from '@src/app.config'
 
-import {
-  required,
-  minLength,
-  maxLength,
-  numeric,
-  email,
-} from 'vuelidate/lib/validators'
+import { required, minLength, maxLength, numeric, email } from 'vuelidate/lib/validators'
 
 export default {
   name: 'CliInsert',
@@ -277,7 +175,7 @@ export default {
         },
       },
       labels: {
-        title: 'Ingresar Administrador',
+        title: 'Ingresar Cliente',
       },
 
       show: true,

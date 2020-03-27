@@ -13,86 +13,93 @@
               role="status"
             ></div>
           </div>
-          <div
-            v-show="submitStatus === 'OK'"
-            class="alert alert-success"
-            role="alert"
-          >
+          <div v-show="submitStatus === 'OK'" class="alert alert-success" role="alert">
             <i class="mdi mdi-check-all mr-2"></i> Producto ingresado
             <strong>correctamente!</strong>
           </div>
 
-          <form
-            v-show="submitStatus !== 'PENDING'"
-            action="/something"
-            method="post"
-            :disabled="0"
-            @submit="checkForm"
-          >
-            <div
-              v-if="submitStatus === 'ERROR'"
-              class="alert alert-danger bg-danger text-white border-0"
-              role="alert"
-            >
+          <form v-show="submitStatus !== 'PENDING'" action="/something" method="post" :disabled="0" @submit="checkForm">
+            <div v-if="submitStatus === 'ERROR'" class="alert alert-danger bg-danger text-white border-0" role="alert">
               Los campos no son
               <strong>validos</strong>
             </div>
             <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">Cliente</h5>
             <div class="form-row mb-1">
               <div class="col-auto">
-                <label for="product-reference">
-                  Seleccionar Tipo de Cliente
-                  <span class="text-danger">*</span>
-                </label>
-                <!-- <select id="inputState" class="form-control">  @change="onChangeCat"  -->
-                <select
-                  id="inputState"
-                  v-model="tipClient"
-                  class="form-control"
-                  tabindex="12"
-                >
-                  <!-- <option selected >Choose</option> -->
-                  <option value="0">Sin codigo</option>
-                  <option value="1">Con condigo</option>
-                </select>
-
-                <ul
-                  v-if="$v.selectedCat.$anyDirty && !$v.selectedCat.required"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
-                  <li class="parsley-required">Requerido.</li>
-                </ul>
+                <b-form-group label="Seleccionar Tipo de Cliente">
+                  <b-form-radio-group
+                    id="radio-group-1"
+                    v-model="form.tipClient.value"
+                    :options="form.tipClient.options"
+                    name="radio-options"
+                  ></b-form-radio-group>
+                </b-form-group>
               </div>
-              <div class="col-3">
+            </div>
+            <!-- <div v-if="form.tipClient.value === 'REGISTRADO'" class="form-row mb-1 ">
+              <div class="col-auto">
+                <b-form-group label="Buscar por:">
+                  <b-form-radio-group
+                    v-model="form.radioSearchUser.value"
+                    :options="form.radioSearchUser.options"
+                    class="mb-3"
+                    disabled-field="notEnabled"
+                  ></b-form-radio-group>
+                </b-form-group>
+              </div>
+              <div class="col-auto">
                 <label for="product-reference">
-                  Nro. Doc
-                  <span class="text-danger">*</span>
+                  Buscar
                 </label>
                 <input
-                  id="cliDoc"
-                  v-model.trim="cliDoc"
+                  id="id-client-SearchBar"
+                  :value="form.searchBar"
                   type="string"
                   class="form-control"
-                  placeholder="Nro. Doc"
+                  placeholder="Buscar"
+                  list="id-client-name-list"
+                  @input="findClientInputOptions"
                 />
+                <datalist id="id-client-name-list">
+                  <option>Manual Option</option>
+                  <option v-for="nameOption in nameOptions" :key="nameOption.id">{{ nameOption }}</option>
+                </datalist>
+              </div>
+            </div> -->
+
+            <div class="form-row align-items-center mb-2">
+              <div class="col-2">
+                <label for="product-reference">
+                  Codigo
+                </label>
+                <b-form-input
+                  v-model="IdCod"
+                  placeholder="Cod Usuario"
+                  debounce="500"
+                  :disabled="form.tipClient.value !== 'REGISTRADO'"
+                ></b-form-input>
+              </div>
+              <div class="col-2">
+                <label for="product-reference">
+                  DNI
+                </label>
+                <b-form-input
+                  v-model="Invoice.client.Dni_Cli"
+                  placeholder="Dni"
+                  :disabled="form.tipClient.value === 'REGISTRADO'"
+                ></b-form-input>
               </div>
               <div class="col-6">
                 <label for="product-reference">
-                  Nombre de cliente
-                  <span class="text-danger">*</span>
+                  Nombre de Cliente
                 </label>
-                <input
-                  id="cliDoc"
-                  v-model.trim="cliDoc"
-                  type="string"
-                  class="form-control"
+                <b-form-input
+                  v-model="Invoice.client.Nom_Cli"
                   placeholder="Nombre de Cliente"
-                  :disabled="tipClient === '1'"
-                />
+                  :disabled="form.tipClient.value === 'REGISTRADO'"
+                ></b-form-input>
               </div>
             </div>
-            <!-- <ul class="parsley-errors-list filled mb-2" id="parsley-id-7"><li class="parsley-required">This value is required.</li></ul> -->
 
             <div class="form-row align-items-center mb-2">
               <div class="col-auto">
@@ -101,7 +108,7 @@
                   <span class="text-danger">*</span>
                 </label>
                 <v-date-picker
-                  v-model="dateIng"
+                  v-model="Invoice.DateCreacion"
                   color="red"
                   is-dark
                   :input-props="{
@@ -116,7 +123,7 @@
                   <span class="text-danger">*</span>
                 </label>
                 <v-date-picker
-                  v-model="dateven"
+                  v-model="Invoice.DateVencimiento"
                   color="red"
                   is-dark
                   :input-props="{
@@ -126,144 +133,71 @@
                 />
               </div>
             </div>
-            <div class="form-row mb-2">
-              <div class="col-auto">
-                <label for="product-price">
-                  Precio de Compra
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  id="product-price"
-                  v-model.trim="$v.precioCompra.$model"
-                  type="number"
-                  class="form-control"
-                  placeholder="Ingrese cantidad"
-                />
-                <ul
-                  v-if="$v.precioCompra.$anyDirty && !$v.precioCompra.minValue"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
-                  <li class="parsley-required">
-                    el
-                    <strong>Valor</strong> tiene que ser mayor.
-                  </li>
-                </ul>
-              </div>
-              <div class="col-auto">
-                <label for="product-price">
-                  Precio Unitario de Venta
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  id="product-price"
-                  v-model.trim="$v.precioVenta.$model"
-                  type="number"
-                  class="form-control"
-                  placeholder="Ingrese cantidad"
-                />
-                <ul
-                  v-if="$v.precioVenta.$anyDirty && !$v.precioVenta.minValue"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
-                  <li class="parsley-required">
-                    el
-                    <strong>Valor</strong> tiene que ser mayor.
-                  </li>
-                </ul>
+
+            <div class="row">
+              <div class="col-12">
+                <div class="card-box">
+                  <b-table
+                    striped
+                    hover
+                    :items="Invoice.detalleItems"
+                    :fields="form.itemsFieldsTable"
+                    class="table table-centered mb-0"
+                    custom-foot
+                  >
+                    <!-- <template v-slot:cell(Cod_Medi)="row">
+                      <b-form-input
+                        v-model="Invoice.detalleItems[row.index].id"
+                        placeholder="Cod"
+                        bounce="500"
+                        class="tabledit-input form-control form-control-sm"
+                        :state="form.itemsFieldsTable[row.index].state"
+                        @input="findProductInfo(row.index)"
+                      ></b-form-input>
+                    </template> -->
+
+                    <template v-slot:cell(Cod_Medi)="row">
+                      <b-form-input
+                        v-model="Invoice.detalleItems[row.index].id"
+                        placeholder="Cod"
+                        bounce="500"
+                        class="tabledit-input form-control form-control-sm"
+                        :state="form.itemsFieldsTable[row.index].state"
+                        @input="findProductInfo(row.index)"
+                      ></b-form-input>
+                    </template>
+
+                    <template v-slot:cell(Cant_Dmed)="row">
+                      <b-form-input
+                        v-model="Invoice.detalleItems[row.index].Cant_Dmed"
+                        placeholder="Cant."
+                        @input="calcImpTotal(row.index)"
+                      ></b-form-input>
+                    </template>
+
+                    <template v-slot:custom-foot="">
+                      <b-tr>
+                        <b-th :colspan="3" sticky-column>Resultados</b-th>
+                        <b-th :colspan="2" class="text-right" sticky-column>Importe Bruto:</b-th>
+                        <b-th :colspan="1">{{ Invoice.subTotal }} </b-th>
+                      </b-tr>
+                      <b-tr>
+                        <b-th :colspan="3" sticky-column></b-th>
+                        <b-th :colspan="2" class="text-right" sticky-column>con IGV:</b-th>
+                        <b-th :colspan="1">{{ Invoice.igvTotal }} </b-th>
+                      </b-tr>
+                      <b-tr>
+                        <b-th :colspan="3" sticky-column></b-th>
+                        <b-th :colspan="2" class="text-right" sticky-column>con IGV:</b-th>
+                        <b-th :colspan="1">{{ Invoice.precioTotal }} </b-th>
+                      </b-tr>
+                    </template>
+                  </b-table>
+                </div>
               </div>
             </div>
 
-            <div class="form-row mb-2">
-              <div class="col-auto">
-                <label for="product-price">
-                  Stock Minimo
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  id="product-price"
-                  v-model.trim="$v.stockMin.$model"
-                  type="number"
-                  class="form-control"
-                  placeholder="Ingrese cantidad"
-                />
-                <ul
-                  v-if="$v.stockMin.$anyDirty && !$v.stockMin.minValue"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
-                  <li class="parsley-required">
-                    el
-                    <strong>Valor</strong> tiene que ser mayor.
-                  </li>
-                </ul>
-              </div>
-              <div class="col-auto">
-                <label for="product-price">
-                  Stock Maximo
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  id="product-price"
-                  v-model.trim="$v.stockMax.$model"
-                  type="number"
-                  class="form-control"
-                  placeholder="Ingrese cantidad"
-                />
-                <ul
-                  v-if="$v.stockMax.$anyDirty && !$v.stockMax.minValue"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
-                  <li class="parsley-required">
-                    el
-                    <strong>Valor</strong> tiene que ser mayor.
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="form-row mb-2">
-              <div class>
-                <label for="product-price">
-                  Ingresar Proveedor
-                  <span class="text-danger">*</span>
-                </label>
-                <!-- eslint-disable-next-line -->
-                <vue-bootstrap-typeahead
-                  v-model="autoCompleteProdQuery"
-                  class="mb-2"
-                  :data="autoCompleteProducts"
-                  :serializer="(item) => item.Nom_Medi"
-                  placeholder="Buscar Proveedores"
-                  @hit="selectedProveedor = $event"
-                />
-
-                <label
-                  v-if="selectedProveedor && selectedProveedor.RazonSoc_Prov"
-                  for="selectedProveedor"
-                >
-                  <strong>RUC:</strong>
-                  {{ selectedProveedor.RUC }} /
-                  <strong>Razon Social:</strong>
-                  {{ selectedProveedor.RazonSoc_Prov }}
-                </label>
-                <ul
-                  v-if="$v.query.$anyDirty && !provIndex"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
-                  <li class="parsley-required">Requerido.</li>
-                </ul>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              class="btn btn-primary waves-effect waves-light mt-3"
-              >Ingresar Producto</button
-            >
+            <button type="submit" class="btn btn-primary waves-effect waves-light mt-3">Ingresar Producto</button>
           </form>
         </div>
       </div>
@@ -276,32 +210,75 @@
 
 <script>
 import axios from 'axios'
-// import _ from 'underscore'
-
 import { required, minValue } from 'vuelidate/lib/validators' // minLength
-import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
 
-// const API_URL = process.env.API_BASE_URL + 'http://localhost:3010/products/getProdByCodOrDesc?razSoc=:query'
-//          const API_URL = 'https://api-url-here.com?query=:query'
+import { API_URL } from '@src/app.config'
+
+// import { response } from 'express/lib/express'
+
 export default {
   name: 'ProdInsert',
-  components: {
-    VueBootstrapTypeahead,
-  },
+  components: {},
   data() {
     return {
-      tipClient: 0,
-      cliDoc: null,
-
       autoCompleteProdQuery: '',
       autoCompleteProducts: [],
 
-      invoiceProducts: [
-        { id: '0001', Nom_Medi: 'My journey with Vue' },
-        { id: '0002', Nom_Medi: 'Blogging with Vue' },
-        { id: '0003', Nom_Medi: 'Why Vue is so fun' },
-      ],
+      nameOptions: ['Small', 'Medium', 'Large', 'Extra Large'],
 
+      form: {
+        tipClient: {
+          value: 'REGISTRADO',
+          options: [
+            { text: 'Cliente Registrado', value: 'REGISTRADO' },
+            { text: 'Cliente Nuevo', value: 'NUEVO' },
+          ],
+        },
+        radioSearchUser: {
+          value: 'SEARCH_BY_USER',
+          options: [
+            { text: 'Buscar por ID', value: 'SEARCH_BY_USER' },
+            { text: 'Buscar por Nombre ', value: 'SEARCH_BY_ID' },
+          ],
+        },
+        itemsFieldsTable: [
+          { key: 'line_medi', label: '#' },
+          { key: 'Cod_Medi', label: 'Cod', thStyle: 'width: 100px' },
+          { key: 'Nom_Medi', label: 'Nombre del Producto' },
+          { key: 'Cant_Dmed', label: 'Cantidad', thStyle: 'width: 100px' },
+          { key: 'Precio_Unitario', label: 'Val. Uni.' },
+          { key: 'Importe_Total', label: 'Val. Total' },
+        ],
+
+        searchBar: '',
+        clientId: '',
+        clientName: '',
+      },
+      Invoice: {
+        DateCreacion: new Date(),
+        DateVencimiento: new Date(),
+        subTotal: 0.0,
+        igv: 18,
+        igvTotal: 0,
+        precioTotal: 0,
+        client: {
+          id: '',
+          Nom_Cli: '',
+          Dni_Cli: '',
+        },
+        detalleItems: [
+          { line_medi: 1, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null },
+          { line_medi: 2, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null },
+          { line_medi: 3, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null },
+          { line_medi: 4, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null },
+          { line_medi: 5, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null },
+        ],
+      },
+
+      clienteModel: {
+        cliDoc: null,
+      },
+      cliDoc: null,
       //   items: navigationRoutes.routes,
       submitStatus: null,
       categories: [],
@@ -380,40 +357,81 @@ export default {
         .reverse()
         .join('')
     },
-  },
-  // created: function() {
-  //   axios
-  //     .get('http://localhost:3010/products/getcat/10')
-  //     .then((response) => {
-  //       console.log('Cat Loaded')
-  //       this.categories = response.data
-  //     })
-  //     .catch(function(error) {
-  //       console.log('error con Categorias ' + error)
-  //     })
-  // },
-  watch: {
-    // addressSearchx: _.debounce(function(addr) {
-    // console.log('x2')
-    // this.getAddresses(addr) }, 500)
-    query(newQuery) {
-      // console.log('e');
-      axios
-        // .get(`http://localhost:3010/products/getproveedores?razSoc=${newQuery}`)
-        .get(`http://localhost:3010/products/getProdByCodOrDesc/1`)
-        .then((res) => {
-          // console.log('TCL: query -> res.data', res.data)
-          this.autoCompleteProducts = res.data
-        })
-        .catch(function(e) {
-          // console.log('e'); // "oh, no!"
-        })
+    precioTotal: () => {
+      return 123
+    },
+
+    IdCod: {
+      get: function() {
+        return this.Invoice.client.id
+      },
+      set: function(newId) {
+        axios
+          .get(API_URL + `clients/find?id=${newId}`)
+          .then((res) => {
+            this.Invoice.client.id = res.data[0].id
+            this.Invoice.client.Nom_Cli = res.data[0].Nom_Cli
+            this.Invoice.client.Dni_Cli = res.data[0].Dni_Cli
+            console.log(res)
+          })
+          .catch((error) => {
+            console.log(error)
+            this.Invoice.client.Nom_Cli = ''
+            this.Invoice.client.Dni_Cli = ''
+          })
+      },
+    },
+    Total: () => {
+      return this.detalleItems.reduce(function(cnt, o) {
+        return cnt + o.Importe_Total
+      }, 0)
     },
   },
-  // age: {
-  //   between: between(20, 30)
-  // },
+
   methods: {
+    findClientInputOptions: () => {
+      axios.get(
+        (API_URL + `clients/find?id=${this.searchBar}`).then((response) => {
+          console.log(response)
+        })
+      )
+    },
+    findProductInfo(index) {
+      let productId = this.Invoice.detalleItems[index].id
+      axios
+        .get(API_URL + `products/findbyId?id=${productId}`)
+        .then((res) => {
+          console.dir(res)
+          // this.Invoice.client.id = res.data[0].id
+          this.Invoice.detalleItems[index].Nom_Medi = res.data.Nom_Medi
+          this.Invoice.detalleItems[index].Precio_Unitario = res.data.Precio_Unitario
+          this.Invoice.detalleItems[index].Cant_Dmed = 0
+          this.form.itemsFieldsTable[index].state = true
+          console.log(res)
+          return this.Invoice.detalleItems[index].id
+        })
+        .catch((error) => {
+          console.log(error)
+          this.Invoice.detalleItems[index].Nom_Medi = ''
+          this.Invoice.detalleItems[index].Precio_Unitario = 0
+          this.Invoice.detalleItems[index].Cant_Dmed = 0
+          this.form.itemsFieldsTable[index].state = false
+        })
+    },
+    calcImpTotal(index) {
+      // let productId = this.Invoice.detalleItems[index].id
+      this.Invoice.detalleItems[index].Importe_Total =
+        this.Invoice.detalleItems[index].Cant_Dmed * this.Invoice.detalleItems[index].Precio_Unitario
+
+      this.Invoice.subTotal = this.Invoice.detalleItems.reduce(function(cnt, o) {
+        return cnt + o.Importe_Total
+      }, 0)
+
+      this.Invoice.igvTotal = this.Invoice.subTotal * (this.Invoice.igv * 0.01)
+      this.Invoice.precioTotal = this.Invoice.igvTotal + this.Invoice.subTotal
+    },
+
+    // antiguo testamento
     checkForm: function(e) {
       e.preventDefault()
       // console.log('submit!')

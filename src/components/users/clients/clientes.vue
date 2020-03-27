@@ -50,9 +50,7 @@
                 </template>
 
                 <template v-slot:cell(Acciones)="row">
-                  <b-button-group
-                    v-if="categories[row.index].actionOptions === 'default'"
-                  >
+                  <b-button-group v-if="categories[row.index].actionOptions === 'default'">
                     <!--
 
               > -->
@@ -73,31 +71,17 @@
                       ><span class="mdi mdi-8px mdi-pencil"></span
                     ></router-link>
 
-                    <b-button
-                      variant="outline-danger"
-                      type="button"
-                      @click="deleteCategory(row.index)"
-                    >
+                    <b-button variant="outline-danger" type="button" @click="deleteUserClient(row.index)">
                       <span class="mdi mdi-8px mdi-delete"></span>
                     </b-button>
                   </b-button-group>
-                  <b-button-group
-                    v-if="categories[row.index].actionOptions === 'editing'"
-                  >
-                    <b-button
-                      variant="outline-success"
-                      type="button"
-                      @click="updateCategory(row.index)"
-                    >
+                  <b-button-group v-if="categories[row.index].actionOptions === 'editing'">
+                    <b-button variant="outline-success" type="button" @click="updateCategory(row.index)">
                       Actualizar
                       <span class="mdi mdi-8px mdi-content-save"></span>
                     </b-button>
 
-                    <b-button
-                      variant="outline-danger"
-                      type="button"
-                      @click="toggleRow(row.index)"
-                    >
+                    <b-button variant="outline-danger" type="button" @click="toggleRow(row.index)">
                       cancelar
                       <span class="mdi mdi-8px mdi-close"></span>
                     </b-button>
@@ -117,15 +101,14 @@
 </template>
 
 <script>
-import vueAlerts from '../basicElements/alert'
+import vueAlerts from '@src/components/basicElements/alert'
 import axios from 'axios'
 import { required } from 'vuelidate/lib/validators'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss' // minLength
 import appConfig from '@src/app.config' // configuracion file
 
-let catController = require('./categoriesHelpers')
-// const API_URL = 'http://localhost:3010/products/getproveedores?razSoc=:query'
+let clientController = require('./clientsHelpers')
 
 export default {
   name: 'ProdInsert',
@@ -183,24 +166,20 @@ export default {
     },
   },
   computed: {
-    provIndex: {
-      get: function() {
-        if (this.selectedProveedor && this.selectedProveedor.id) {
-          return this.selectedProveedor.id
-        } else {
-          return null
-        }
-      },
+    provIndex: function() {
+      // `this` points to the vm instance
+      return this.message
+        .split('')
+        .reverse()
+        .join('')
     },
   },
   watch: {
     query(newQuery) {
-      axios
-        .get(`http://localhost:3010/products/getproveedores?razSoc=${newQuery}`)
-        .then((res) => {
-          // console.log('TCL: query -> res.data', res.data)
-          this.proveedores = res.data
-        })
+      axios.get(`http://localhost:3010/products/getproveedores?razSoc=${newQuery}`).then((res) => {
+        // console.log('TCL: query -> res.data', res.data)
+        this.proveedores = res.data
+      })
     },
   },
   created: function() {
@@ -268,7 +247,7 @@ export default {
       this.$root.$emit('bv::refresh::table', 'my-table')
     },
     updateCategory: function(index) {
-      catController
+      clientController
         .updateCategory({
           id: this.categories[index].id,
           Desc_Cat: this.categories[index].Desc_Cat,
@@ -280,29 +259,25 @@ export default {
           // this.flash('Data loadedx', 'success');
         })
     },
-    deleteCategory: function(index) {
+    deleteUserClient: function(index) {
       Swal.fire({
         title: 'Estas seguro?',
-        text: 'La categoria sera eliminada!',
+        text: 'El cliente sera eliminado!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Si, Eliminar',
-        cancelButtonText: 'No, Conservar la categoria',
+        cancelButtonText: 'No, Conservar el Cliente',
       }).then((result) => {
         if (result.value) {
-          Swal.fire('Eliminado!', 'Categoria Eliminada.', 'success')
+          Swal.fire('Eliminado!', 'Cliente Eliminado.', 'success')
           this.submitStatus = 'PENDING'
-          catController
-            .deleteCategory({
-              id: this.categories[index].id,
-            })
-            .then(() => {
-              this.categories[index].actionOptions = 'default'
-              // this.alerts.push({mensaje: 'Categoria Eliminada'})
-              this.fillTable()
-              this.submitStatus = 'OK'
-              this.$root.$emit('bv::refresh::table', 'my-table')
-            })
+          clientController.deleteClient(this.categories[index].id).then(() => {
+            this.categories[index].actionOptions = 'default'
+            // this.alerts.push({mensaje: 'Categoria Eliminada'})
+            this.fillTable()
+            this.submitStatus = 'OK'
+            this.$root.$emit('bv::refresh::table', 'my-table')
+          })
         }
       })
     },

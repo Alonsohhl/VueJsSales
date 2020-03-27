@@ -30,14 +30,12 @@ export default [
           {
             name: 'mainProd',
             path: 'mainProd',
-            component: () =>
-              lazyLoadView(import('../components/products/main')),
+            component: () => lazyLoadView(import('../components/products/main')),
           },
           {
             name: 'mainCategories',
             path: 'mainCategories',
-            component: () =>
-              lazyLoadView(import('../components/products/mainCategories')),
+            component: () => lazyLoadView(import('../components/products/mainCategories')),
           },
         ],
       },
@@ -62,37 +60,39 @@ export default [
           {
             name: 'clientes',
             path: 'clientes',
-            component: () => import('../components/users/clientes'),
+            component: () => import('../components/users/clients/clientes'),
             default: true,
           },
           {
             name: 'clientesDetalle',
             path: 'clientes/:id',
-            component: () => import('../components/users/addCliente'),
+            component: () => import('../components/users/clients/addCliente'),
           },
           {
             name: 'addCliente',
             path: 'ingresarCliente/',
-            component: () => import('../components/users/addCliente'),
+            component: () => import('../components/users/clients/addCliente'),
           },
           {
             name: 'sisUsuarios',
             path: 'admin',
-            component: () =>
-              import('../components/users/adminUser/userDashboard'),
+            component: () => import('../components/users/adminUser/userDashboard'),
             children: [
               {
                 name: 'adminUserDisplay',
                 path: '',
-                component: () =>
-                  import('../components/users/adminUser/adminUserDisplay'),
+                component: () => import('../components/users/adminUser/adminUserDisplay'),
                 default: true,
               },
               {
                 name: 'addUserAdmin',
                 path: 'agregar',
-                component: () =>
-                  import('../components/users/adminUser/addUser'),
+                component: () => import('../components/users/adminUser/userInsert'),
+              },
+              {
+                name: 'udpUserAdmin',
+                path: 'editar/:id',
+                component: () => import('../components/users/adminUser/userUpdate'),
               },
             ],
           },
@@ -176,9 +176,7 @@ export default [
       authRequired: true,
       beforeResolve(routeTo, routeFrom, next) {
         store.dispatch('auth/logOut')
-        const authRequiredOnPreviousRoute = routeFrom.matched.some(
-          (route) => route.meta.authRequired
-        )
+        const authRequiredOnPreviousRoute = routeFrom.matched.some((route) => route.meta.authRequired)
         // Navigate back to previous page, or home as a fallback
         next(authRequiredOnPreviousRoute ? { name: 'home' } : { ...routeFrom })
       },
