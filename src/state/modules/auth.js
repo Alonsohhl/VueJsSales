@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { API_URL } from '@src/app.config'
 
 export const state = {
   currentUser: getSavedState('auth.currentUser'),
@@ -6,8 +7,6 @@ export const state = {
 
 export const mutations = {
   SET_CURRENT_USER(state, newValue) {
-    console.dir('.' + newValue)
-    console.dir(newValue)
     state.currentUser = newValue
     saveState('auth.currentUser', newValue)
     setDefaultAuthHeaders(state)
@@ -36,7 +35,7 @@ export const actions = {
     return (
       axios
         // .post('/api/session', { username, password })
-        .post('http://localhost:3010/users/login', {
+        .post(API_URL + 'users/login', {
           user: { Nom_Usu: username, Pass_Usu: password },
         })
         .then((response) => {
@@ -50,9 +49,7 @@ export const actions = {
             token: response.data.user.token,
             email: response.data.user.email,
           }
-          console.log('Exito')
-          console.dir(response.data)
-          console.dir(user)
+
           commit('SET_CURRENT_USER', user)
           return user
         })
@@ -68,12 +65,10 @@ export const actions = {
   register({ commit, dispatch, getters }, { fullname, email, password } = {}) {
     if (getters.loggedIn) return dispatch('validate')
 
-    return axios
-      .post('/api/register', { fullname, email, password })
-      .then((response) => {
-        const user = response.data
-        return user
-      })
+    return axios.post('/api/register', { fullname, email, password }).then((response) => {
+      const user = response.data
+      return user
+    })
   },
 
   // register the user
@@ -93,7 +88,7 @@ export const actions = {
     return (
       axios
         // .get('/api/session')
-        .get('http://localhost:3010/users/session', {
+        .get(API_URL + 'users/session', {
           headers: { Authorization: 'Token ' + state.currentUser.token },
         })
         .then((response) => {
@@ -128,7 +123,5 @@ function setDefaultAuthHeaders(state) {
   // axios.defaults.headers.common.Authorization = state.currentUser
   //   ? state.currentUser.token
   //   : ''
-  axios.defaults.headers.common.Authorization = state.currentUser
-    ? state.currentUser.token
-    : ''
+  axios.defaults.headers.common.Authorization = state.currentUser ? state.currentUser.token : ''
 }

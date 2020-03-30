@@ -8,22 +8,33 @@
           <!-- <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p> -->
           <div class="d-flex justify-content-center">
             <div
-              v-show="submitStatus === 'PENDING'"
+              v-show="form.submitStatus === 'PENDING'"
               class="spinner-border text-success m-2 avatar-lg"
               role="status"
             ></div>
           </div>
-          <div v-show="submitStatus === 'OK'" class="alert alert-success" role="alert">
-            <i class="mdi mdi-check-all mr-2"></i> Producto ingresado
+          <div v-show="form.submitStatus === 'OK'" class="alert alert-success" role="alert">
+            <i class="mdi mdi-check-all mr-2"></i> Documento ingresado
             <strong>correctamente!</strong>
           </div>
 
-          <form v-show="submitStatus !== 'PENDING'" action="/something" method="post" :disabled="0" @submit="checkForm">
-            <div v-if="submitStatus === 'ERROR'" class="alert alert-danger bg-danger text-white border-0" role="alert">
+          <form v-show="form.submitStatus !== 'PENDING'" :disabled="0" @submit.stop.prevent="onSubmit">
+            <div
+              v-if="form.submitStatus === 'ERROR'"
+              class="alert alert-danger bg-danger text-white border-0"
+              role="alert"
+            >
               Los campos no son
               <strong>validos</strong>
             </div>
             <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">Cliente</h5>
+            <div v-if="$v.Invoice.client.id.$anyError">
+              <b-alert show>
+                <i class="mdi mdi-block-helper mr-2"></i>
+                Codigo de Cliente invalido x
+                {{ $v.Invoice.client.id.required }}
+              </b-alert>
+            </div>
             <div class="form-row mb-1">
               <div class="col-auto">
                 <b-form-group label="Seleccionar Tipo de Cliente">
@@ -36,36 +47,6 @@
                 </b-form-group>
               </div>
             </div>
-            <!-- <div v-if="form.tipClient.value === 'REGISTRADO'" class="form-row mb-1 ">
-              <div class="col-auto">
-                <b-form-group label="Buscar por:">
-                  <b-form-radio-group
-                    v-model="form.radioSearchUser.value"
-                    :options="form.radioSearchUser.options"
-                    class="mb-3"
-                    disabled-field="notEnabled"
-                  ></b-form-radio-group>
-                </b-form-group>
-              </div>
-              <div class="col-auto">
-                <label for="product-reference">
-                  Buscar
-                </label>
-                <input
-                  id="id-client-SearchBar"
-                  :value="form.searchBar"
-                  type="string"
-                  class="form-control"
-                  placeholder="Buscar"
-                  list="id-client-name-list"
-                  @input="findClientInputOptions"
-                />
-                <datalist id="id-client-name-list">
-                  <option>Manual Option</option>
-                  <option v-for="nameOption in nameOptions" :key="nameOption.id">{{ nameOption }}</option>
-                </datalist>
-              </div>
-            </div> -->
 
             <div class="form-row align-items-center mb-2">
               <div class="col-2">
@@ -73,10 +54,11 @@
                   Codigo
                 </label>
                 <b-form-input
-                  v-model="IdCod"
+                  v-model="Invoice.client.id"
                   placeholder="Cod Usuario"
                   debounce="500"
                   :disabled="form.tipClient.value !== 'REGISTRADO'"
+                  :state="form.client.id.state"
                 ></b-form-input>
               </div>
               <div class="col-2">
@@ -145,17 +127,6 @@
                     class="table table-centered mb-0"
                     custom-foot
                   >
-                    <!-- <template v-slot:cell(Cod_Medi)="row">
-                      <b-form-input
-                        v-model="Invoice.detalleItems[row.index].id"
-                        placeholder="Cod"
-                        bounce="500"
-                        class="tabledit-input form-control form-control-sm"
-                        :state="form.itemsFieldsTable[row.index].state"
-                        @input="findProductInfo(row.index)"
-                      ></b-form-input>
-                    </template> -->
-
                     <template v-slot:cell(Cod_Medi)="row">
                       <b-form-input
                         v-model="Invoice.detalleItems[row.index].id"
@@ -179,25 +150,28 @@
                       <b-tr>
                         <b-th :colspan="3" sticky-column>Resultados</b-th>
                         <b-th :colspan="2" class="text-right" sticky-column>Importe Bruto:</b-th>
-                        <b-th :colspan="1">{{ Invoice.subTotal }} </b-th>
+                        <b-th :colspan="1">{{ Invoice.subTotal | toCurrency }} </b-th>
                       </b-tr>
                       <b-tr>
                         <b-th :colspan="3" sticky-column></b-th>
                         <b-th :colspan="2" class="text-right" sticky-column>con IGV:</b-th>
-                        <b-th :colspan="1">{{ Invoice.igvTotal }} </b-th>
+                        <b-th :colspan="1">{{ Invoice.igvTotal | toCurrency }} </b-th>
                       </b-tr>
                       <b-tr>
                         <b-th :colspan="3" sticky-column></b-th>
                         <b-th :colspan="2" class="text-right" sticky-column>con IGV:</b-th>
-                        <b-th :colspan="1">{{ Invoice.precioTotal }} </b-th>
+                        <b-th :colspan="1">{{ Invoice.precioTotal | toCurrency }} </b-th>
                       </b-tr>
                     </template>
                   </b-table>
+                  <button type="submit" class="btn btn-primary waves-effect waves-light m-2 float-right"
+                    >Ingresar Producto</button
+                  >
                 </div>
               </div>
-            </div>
 
-            <button type="submit" class="btn btn-primary waves-effect waves-light mt-3">Ingresar Producto</button>
+              Documento creado por: {{ currentUser.name }}
+            </div>
           </form>
         </div>
       </div>
@@ -210,29 +184,46 @@
 
 <script>
 import axios from 'axios'
-import { required, minValue } from 'vuelidate/lib/validators' // minLength
+// import { required, minValue } from 'vuelidate/lib/validators' // minLength
+import { required, minValue } from 'vuelidate/lib/validators'
 
 import { API_URL } from '@src/app.config'
-
-// import { response } from 'express/lib/express'
+// const mustBeCool = (value) => false
 
 export default {
   name: 'ProdInsert',
   components: {},
+  filters: {
+    stringify(value) {
+      return JSON.stringify(value, null, 2)
+    },
+  },
+  props: {
+    user: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
       autoCompleteProdQuery: '',
       autoCompleteProducts: [],
+      auxx: '0',
 
       nameOptions: ['Small', 'Medium', 'Large', 'Extra Large'],
 
       form: {
+        submitStatus: null,
         tipClient: {
           value: 'REGISTRADO',
           options: [
             { text: 'Cliente Registrado', value: 'REGISTRADO' },
             { text: 'Cliente Nuevo', value: 'NUEVO' },
           ],
+        },
+        client: {
+          id: { state: null },
         },
         radioSearchUser: {
           value: 'SEARCH_BY_USER',
@@ -262,7 +253,7 @@ export default {
         igvTotal: 0,
         precioTotal: 0,
         client: {
-          id: '',
+          id: null,
           Nom_Cli: '',
           Dni_Cli: '',
         },
@@ -274,81 +265,25 @@ export default {
           { line_medi: 5, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null },
         ],
       },
-
-      clienteModel: {
-        cliDoc: null,
-      },
-      cliDoc: null,
-      //   items: navigationRoutes.routes,
-      submitStatus: null,
-      categories: [],
-      //   medCantidad: 0;
-      selectedCat: null,
-      productName: '',
-      productDescription: '',
-      dateIng: new Date(),
-      dateven: new Date(),
-      precioCompra: 0,
-      precioVenta: 0,
-      stockMin: 0,
-      stockMax: 0,
-      medPrescripcion: 0,
-      // proveedorindex: getProvIndex(),
-      // provIndex,
-
-      query: '',
-      selectedProveedor: null,
-      proveedores: [],
     }
   },
-  validations: {
-    productName: {
-      required,
-    },
-    selectedCat: {
-      required,
-    },
-    productDescription: {
-      required,
-    },
-    dateIng: {
-      required,
-    },
-    dateven: {
-      required,
-    },
-    precioCompra: {
-      required,
-      minValue: minValue(1),
-    },
-    precioVenta: {
-      required,
-      minValue: minValue(1),
-    },
-    stockMin: {
-      required,
-      minValue: minValue(1),
-    },
-    stockMax: {
-      required,
-      minValue: minValue(1),
-    },
-    medPrescripcion: {
-      required,
-    },
-    query: {
-      required,
-    },
+
+  validations() {
+    return {
+      Invoice: {
+        DateCreacion: { required },
+        DateVencimiento: { required },
+        subTotal: { required, minValue: minValue(1) },
+        igv: { required },
+        igvTotal: { required, minValue: minValue(1) },
+        precioTotal: { required, minValue: minValue(1) },
+        client: { id: { required } },
+      },
+    }
   },
   computed: {
-    provIndex: {
-      get: function() {
-        if (this.selectedProveedor && this.selectedProveedor.id) {
-          return this.selectedProveedor.id
-        } else {
-          return null
-        }
-      },
+    currentUser() {
+      return this.$store.state.auth.currentUser
     },
     autoComplete: function() {
       // `this` points to the vm instance
@@ -361,30 +296,30 @@ export default {
       return 123
     },
 
-    IdCod: {
-      get: function() {
-        return this.Invoice.client.id
-      },
-      set: function(newId) {
-        axios
-          .get(API_URL + `clients/find?id=${newId}`)
-          .then((res) => {
-            this.Invoice.client.id = res.data[0].id
-            this.Invoice.client.Nom_Cli = res.data[0].Nom_Cli
-            this.Invoice.client.Dni_Cli = res.data[0].Dni_Cli
-            console.log(res)
-          })
-          .catch((error) => {
-            console.log(error)
-            this.Invoice.client.Nom_Cli = ''
-            this.Invoice.client.Dni_Cli = ''
-          })
-      },
-    },
     Total: () => {
       return this.detalleItems.reduce(function(cnt, o) {
         return cnt + o.Importe_Total
       }, 0)
+    },
+  },
+  watch: {
+    'Invoice.client.id': function(newQuestion, oldQuestion) {
+      this.$v.Invoice.client.id.$touch()
+      axios
+        .get(API_URL + `clients/find?id=${this.Invoice.client.id}`)
+        .then((res) => {
+          this.Invoice.client.id = res.data[0].id
+          this.form.client.id.state = true
+
+          this.Invoice.client.Nom_Cli = res.data[0].Nom_Cli
+          this.Invoice.client.Dni_Cli = res.data[0].Dni_Cli
+        })
+        .catch((error) => {
+          console.log(error)
+          this.Invoice.client.Nom_Cli = ''
+          this.Invoice.client.Dni_Cli = ''
+          this.form.client.id.state = false
+        })
     },
   },
 
@@ -407,7 +342,7 @@ export default {
           this.Invoice.detalleItems[index].Precio_Unitario = res.data.Precio_Unitario
           this.Invoice.detalleItems[index].Cant_Dmed = 0
           this.form.itemsFieldsTable[index].state = true
-          console.log(res)
+
           return this.Invoice.detalleItems[index].id
         })
         .catch((error) => {
@@ -430,78 +365,81 @@ export default {
       this.Invoice.igvTotal = this.Invoice.subTotal * (this.Invoice.igv * 0.01)
       this.Invoice.precioTotal = this.Invoice.igvTotal + this.Invoice.subTotal
     },
+    onSubmit(evt) {
+      this.$v.Invoice.$touch()
+      if (this.$v.Invoice.$anyError) {
+        console.log(this.$v.Invoice.$anyError)
+        return
+      }
 
-    // antiguo testamento
-    checkForm: function(e) {
-      e.preventDefault()
-      // console.log('submit!')
-      this.$v.$touch()
       if (this.$v.$invalid) {
-        this.submitStatus = 'ERROR'
+        this.form.submitStatus = 'ERROR'
       } else {
-        this.submitStatus = 'PENDING'
+        this.form.submitStatus = 'PENDING'
         axios
-          .post('http://localhost:3010/products/insert', {
-            product: {
-              Nom_Medi: this.productName,
-              Desc_Medi: this.productDescription,
-              Cant_Medi: 2, // ! fix this
-              Precio_Com: this.precioCompra,
-              Precio_Unitario: this.precioVenta,
-              RazonSoc_Prov: 'product.RazonSoc_Prov', // ! fix this
-              Fecha_Ing: this.dateIng,
-              Fecha_Ven: this.dateven,
-              Stock_Min: this.stockMin,
-              Stock_Max: this.stockMax,
-              Pres_Medi: this.medPrescripcion,
-              T01FCATId: this.selectedCat,
-              T01FPROId: this.selectedProveedor.id,
+          .post(API_URL + 'ventas/setVenta', {
+            cabecera: {
+              Ser_Boleta: this.Invoice.Dni_Cli,
+              Num_Boleta: 1111,
+
+              Cod_Sucur: '1',
+
+              Fecha_Boleta: this.Invoice.DateCreacion,
+              Fecha_Venc_Boleta: this.Invoice.DateVencimiento,
+              id_Usuario: this.currentUser.name.id,
+              id_Cliente: this.Invoice.client.id,
+              Sub_Total: this.Invoice.subTotal,
+              IGV: this.Invoice.igvTotal,
+              Precio_Total: this.Invoice.precioTotal,
+              detalle: this.Invoice.detalleItems.map(() => {
+                return {
+                  Cod_Medi: '3',
+                  Nom_Medi: '111',
+                  Cant_Dmed: 1,
+                  Precio_Unitario: 1,
+                  Importe_Total: 1,
+                }
+              }),
             },
           })
           .then((response) => {
-            // console.dir(response)
+            console.dir(response)
             setTimeout((response) => {
-              // console.log('ingresado')
+              console.log('ingresado')
               //   currentObj.output = response
-              this.submitStatus = 'OK'
+              this.form.submitStatus = 'OK'
               // Object.assign(this.$data, this.$options.data())
               // console.Object
-              this.selectedCat = null
-              this.productName = ''
-              this.productDescription = ''
-              this.dateIng = new Date()
-              this.dateven = new Date()
-              this.precioCompra = 0
-              this.precioVenta = 0
-              this.stockMin = 0
-              this.stockMax = 0
-              this.medPrescripcion = 0
+              // this.form.Dni_Cli = ''
+              // this.form.Nom_Cli = ''
+              // this.form.App_Cli = ''
+              // this.form.Apm_Cli = ''
+              // this.form.Correo_Cli = ''
+              // this.form.Sexo_Cli.value = 'masculino'
               this.$v.$reset()
             }, 500)
-            // this.submitStatus = 'OK'
+            // this.form.submitStatus = 'OK'
             //   currentObj.output = response.data;
           })
           .catch((err) => {
             if (err.response && err.response.data) {
-              // console.log(err.response.data)
+              console.log(err.response.data)
             }
-            this.submitStatus = 'ERROR'
-            // console.log('error x')
-            // console.log({ err })
+            this.form.submitStatus = 'ERROR'
+            console.log('error x')
+            console.log({ err })
           })
       }
     },
+
+    // antiguo testamento
+
     async getAddresses(query) {
       // const res = await fetch(API_URL.replace(':query', query))
       // const suggestions = await res.json()
       // this.addresses = suggestions
       // console.dir(this.addresses)
       // console.log('x1')
-    },
-  },
-  filters: {
-    stringify(value) {
-      return JSON.stringify(value, null, 2)
     },
   },
 

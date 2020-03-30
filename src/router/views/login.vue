@@ -68,14 +68,9 @@ export default {
           <div class="card-body p-4">
             <div class="text-center w-75 m-auto">
               <a href="/">
-                <span
-                  ><img src="@assets/images/logo-dark.png" alt="" height="22"
-                /></span>
+                <span><img src="@assets/images/logo-dark.png" alt="" height="22"/></span>
               </a>
-              <p class="text-muted mb-4 mt-3"
-                >Ingresa tu nombre de Usuario y Password para entrar al
-                Sistema.</p
-              >
+              <p class="text-muted mb-4 mt-3">Ingresa tu nombre de Usuario y Password para entrar al Sistema.</p>
             </div>
 
             <b-alert v-model="isAuthError" variant="danger" dismissible>
@@ -83,11 +78,7 @@ export default {
             </b-alert>
 
             <b-form @submit.prevent="tryToLogIn">
-              <b-form-group
-                id="input-group-1"
-                label="Usuario"
-                label-for="input-1"
-              >
+              <b-form-group id="input-group-1" label="Usuario" label-for="input-1">
                 <b-form-input
                   id="input-1"
                   v-model="username"
@@ -97,11 +88,7 @@ export default {
                 ></b-form-input>
               </b-form-group>
 
-              <b-form-group
-                id="input-group-2"
-                label="Password"
-                label-for="input-2"
-              >
+              <b-form-group id="input-group-2" label="Password" label-for="input-2">
                 <b-form-input
                   id="input-2"
                   v-model="password"
@@ -112,9 +99,7 @@ export default {
               </b-form-group>
 
               <b-form-group id="button-group" class="mt-4">
-                <b-button type="submit" variant="primary" class="btn-block"
-                  >Log In</b-button
-                >
+                <b-button type="submit" variant="primary" class="btn-block">Log In</b-button>
               </b-form-group>
             </b-form>
           </div>
@@ -125,12 +110,7 @@ export default {
         <div class="row mt-3">
           <div class="col-12 text-center">
             <p>
-              <router-link
-                tag="a"
-                to="/forget-password"
-                class="text-white-50 ml-1"
-                >Olvidaste tu password?</router-link
-              >
+              <router-link tag="a" to="/forget-password" class="text-white-50 ml-1">Olvidaste tu password?</router-link>
             </p>
             <!-- <p class="text-white-50"
               >Don't have an account?

@@ -33,6 +33,17 @@ Vue.use(Input)
 // Vue.use(Buefy)
 Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
+Vue.filter('toCurrency', function(value) {
+  if (typeof value !== 'number') {
+    return value
+  }
+  var formatter = new Intl.NumberFormat('es-PE', {
+    style: 'currency',
+    currency: 'PEN',
+    minimumFractionDigits: 2,
+  })
+  return formatter.format(value)
+})
 
 const app = new Vue({
   router,

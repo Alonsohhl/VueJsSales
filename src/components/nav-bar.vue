@@ -49,14 +49,9 @@ export default {
       </li>
 
       <b-nav-item-dropdown right class="notification-list">
-        <template
-          slot="button-content"
-          class="nav-link dropdown-toggle  waves-effect waves-light"
-        >
+        <template slot="button-content" class="nav-link dropdown-toggle  waves-effect waves-light">
           <i class="fe-bell noti-icon"></i>
-          <span class="badge badge-danger rounded-circle noti-icon-badge"
-            >9</span
-          >
+          <span class="badge badge-danger rounded-circle noti-icon-badge">10</span>
         </template>
 
         <b-dropdown-text href="#" class="dropdown-item noti-title">
@@ -71,16 +66,9 @@ export default {
 
         <b-dropdown-text href="#" class="p-0">
           <VuePerfectScrollbar v-once class="noti-scroll">
-            <a
-              href="javascript:void(0);"
-              class="dropdown-item notify-item active"
-            >
+            <a href="javascript:void(0);" class="dropdown-item notify-item active">
               <div class="notify-icon">
-                <img
-                  src="@assets/images/users/user-1.jpg"
-                  class="img-fluid rounded-circle"
-                  alt=""
-                />
+                <img src="@assets/images/users/user-1.jpg" class="img-fluid rounded-circle" alt="" />
               </div>
               <p class="notify-details">Cristina Pride</p>
               <p class="text-muted mb-0 user-msg">
@@ -102,11 +90,7 @@ export default {
             <!-- item-->
             <a href="javascript:void(0);" class="dropdown-item notify-item">
               <div class="notify-icon">
-                <img
-                  src="@assets/images/users/user-4.jpg"
-                  class="img-fluid rounded-circle"
-                  alt=""
-                />
+                <img src="@assets/images/users/user-4.jpg" class="img-fluid rounded-circle" alt="" />
               </div>
               <p class="notify-details">Karen Robinson</p>
               <p class="text-muted mb-0 user-msg">
@@ -149,31 +133,18 @@ export default {
             </a>
           </VuePerfectScrollbar>
 
-          <a
-            href="javascript:void(0);"
-            class="dropdown-item text-center text-primary notify-item notify-all"
-          >
+          <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
             View all
             <i class="fi-arrow-right"></i>
           </a>
         </b-dropdown-text>
       </b-nav-item-dropdown>
 
-      <b-nav-item-dropdown
-        right
-        class="notification-list"
-        menu-class="profile-dropdown"
-      >
+      <b-nav-item-dropdown right class="notification-list" menu-class="profile-dropdown">
         <template slot="button-content">
           <div class="nav-user mr-0 waves-effect waves-light">
-            <img
-              src="@assets/images/users/user-1.jpg"
-              alt="user-image"
-              class="rounded-circle"
-            />
-            <span class="pro-user-name ml-1">
-              {{ user ? user.name : '' }} <i class="mdi mdi-chevron-down"></i>
-            </span>
+            <img src="@assets/images/users/user-1.jpg" alt="user-image" class="rounded-circle" />
+            <span class="pro-user-name ml-1"> {{ user ? user.name : '' }} <i class="mdi mdi-chevron-down"></i> </span>
           </div>
         </template>
 
@@ -200,10 +171,7 @@ export default {
       </b-nav-item-dropdown>
 
       <li class="dropdown notification-list">
-        <button
-          class="btn btn-link nav-link right-bar-toggle waves-effect waves-light"
-          @click="toggleRightSidebar"
-        >
+        <button class="btn btn-link nav-link right-bar-toggle waves-effect waves-light" @click="toggleRightSidebar">
           <i class="fe-settings noti-icon"></i>
         </button>
       </li>
@@ -225,10 +193,7 @@ export default {
 
     <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
       <li>
-        <button
-          class="button-menu-mobile waves-effect waves-light"
-          @click="toggleMenu"
-        >
+        <button class="button-menu-mobile waves-effect waves-light" @click="toggleMenu">
           <i class="fe-menu"></i>
         </button>
       </li>
