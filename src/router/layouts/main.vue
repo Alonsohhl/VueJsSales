@@ -20,9 +20,7 @@ export default {
       this.isMenuCondensed = !this.isMenuCondensed
       document.body.classList.toggle('sidebar-enable')
       if (
-        !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-          navigator.userAgent
-        )
+        !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent)
       )
         document.body.classList.toggle('enlarged')
     },

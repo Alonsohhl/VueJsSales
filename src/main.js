@@ -5,11 +5,16 @@ import store from '@state/store'
 import '@components/_globals'
 import VCalendar from 'v-calendar'
 import 'v-calendar/lib/v-calendar.min.css'
+import 'animate.css/animate.min.css'
+
+// import 'animate.css/source/attention_seekers/bounce.css'
 
 import BootstrapVue from 'bootstrap-vue'
 import Vuelidate from 'vuelidate'
 import { Table, Input } from 'buefy'
 import VueFlashMessage from 'vue-flash-message'
+import moment from 'moment'
+moment.locale('es-PE')
 // import 'buefy/dist/buefy.css'
 
 require('dotenv').config()
@@ -33,7 +38,19 @@ Vue.use(Input)
 // Vue.use(Buefy)
 Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
-Vue.filter('toCurrency', function(value) {
+
+Vue.filter('toMomentJs', function (value) {
+  if (!value) return ''
+  if (moment(value).isBefore(moment.now(), 'day')) return moment(value).format('YYYY/MM/DD')
+
+  return moment(value).startOf('hour').fromNow()
+})
+
+Vue.filter('toDate', function (value) {
+  return moment(value).format('YYYY/MM/DD')
+})
+
+Vue.filter('toCurrency', function (value) {
   if (typeof value !== 'number') {
     return value
   }

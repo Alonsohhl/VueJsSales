@@ -5,6 +5,13 @@ import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
 export default {
   components: { VuePerfectScrollbar },
+  // created: function() {
+  //   this.$bvToast.toast(`This is toast number ${this.toastCount}`, {
+  //     title: 'BootstrapVue Toast',
+  //     autoHideDelay: 5000,
+  //     appendToast: true,
+  //   })
+  // },
   props: {
     user: {
       type: Object,

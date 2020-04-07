@@ -18,7 +18,7 @@ export default {
           href: '/',
         },
         {
-          text: 'Dashboard',
+          text: 'Ventas',
           active: true,
         },
       ],

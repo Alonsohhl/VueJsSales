@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-xl-6">
       <div class="card">
         <div class="card-body">
           <h2 class="header-title mb-4">Ingreso</h2>
@@ -13,27 +13,13 @@
               role="status"
             ></div>
           </div>
-          <div
-            v-show="submitStatus === 'OK'"
-            class="alert alert-success"
-            role="alert"
-          >
+          <div v-show="submitStatus === 'OK'" class="alert alert-success" role="alert">
             <i class="mdi mdi-check-all mr-2"></i> Producto ingresado
             <strong>correctamente!</strong>
           </div>
 
-          <form
-            v-show="submitStatus !== 'PENDING'"
-            action="/something"
-            method="post"
-            :disabled="0"
-            @submit="checkForm"
-          >
-            <div
-              v-if="submitStatus === 'ERROR'"
-              class="alert alert-danger bg-danger text-white border-0"
-              role="alert"
-            >
+          <form v-show="submitStatus !== 'PENDING'" action="/something" method="post" :disabled="0" @submit="checkForm">
+            <div v-if="submitStatus === 'ERROR'" class="alert alert-danger bg-danger text-white border-0" role="alert">
               Los campos no son <strong>validos</strong>
             </div>
             <div class="form-row mb-1">
@@ -51,12 +37,7 @@
                   tabindex="12"
                 >
                   <!-- <option selected >Choose</option> -->
-                  <option
-                    v-for="cat in categories"
-                    :key="cat.id"
-                    :value="cat.id"
-                    >{{ cat.Desc_Cat }}</option
-                  >
+                  <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.Desc_Cat }}</option>
                 </select>
                 <ul
                   v-if="$v.selectedCat.$anyDirty && !$v.selectedCat.required"
@@ -158,9 +139,7 @@
                   id="parsley-id-7"
                   class="parsley-errors-list filled mb-2"
                 >
-                  <li class="parsley-required"
-                    >el <strong>Valor</strong> tiene que ser mayor.</li
-                  >
+                  <li class="parsley-required">el <strong>Valor</strong> tiene que ser mayor.</li>
                 </ul>
               </div>
               <div class="col-auto">
@@ -180,9 +159,7 @@
                   id="parsley-id-7"
                   class="parsley-errors-list filled mb-2"
                 >
-                  <li class="parsley-required"
-                    >el <strong>Valor</strong> tiene que ser mayor.</li
-                  >
+                  <li class="parsley-required">el <strong>Valor</strong> tiene que ser mayor.</li>
                 </ul>
               </div>
             </div>
@@ -205,9 +182,7 @@
                   id="parsley-id-7"
                   class="parsley-errors-list filled mb-2"
                 >
-                  <li class="parsley-required"
-                    >el <strong>Valor</strong> tiene que ser mayor.</li
-                  >
+                  <li class="parsley-required">el <strong>Valor</strong> tiene que ser mayor.</li>
                 </ul>
               </div>
               <div class="col-auto">
@@ -227,9 +202,7 @@
                   id="parsley-id-7"
                   class="parsley-errors-list filled mb-2"
                 >
-                  <li class="parsley-required"
-                    >el <strong>Valor</strong> tiene que ser mayor.</li
-                  >
+                  <li class="parsley-required">el <strong>Valor</strong> tiene que ser mayor.</li>
                 </ul>
               </div>
             </div>
@@ -250,29 +223,17 @@
                   @hit="selectedProveedor = $event"
                 />
 
-                <label
-                  v-if="selectedProveedor && selectedProveedor.RazonSoc_Prov"
-                  for="selectedProveedor"
-                >
-                  <strong>RUC: </strong>{{ selectedProveedor.RUC }} /
-                  <strong>Razon Social: </strong
+                <label v-if="selectedProveedor && selectedProveedor.RazonSoc_Prov" for="selectedProveedor">
+                  <strong>RUC: </strong>{{ selectedProveedor.RUC }} / <strong>Razon Social: </strong
                   >{{ selectedProveedor.RazonSoc_Prov }}
                 </label>
-                <ul
-                  v-if="$v.query.$anyDirty && !provIndex"
-                  id="parsley-id-7"
-                  class="parsley-errors-list filled mb-2"
-                >
+                <ul v-if="$v.query.$anyDirty && !provIndex" id="parsley-id-7" class="parsley-errors-list filled mb-2">
                   <li class="parsley-required">Requerido.</li>
                 </ul>
               </div>
             </div>
 
-            <button
-              type="submit"
-              class="btn btn-primary waves-effect waves-light mt-3"
-              >Ingresar Producto</button
-            >
+            <button type="submit" class="btn btn-primary waves-effect waves-light mt-3">Ingresar Producto</button>
           </form>
         </div>
       </div>
@@ -372,12 +333,10 @@ export default {
   },
   watch: {
     query(newQuery) {
-      axios
-        .get(`http://localhost:3010/products/getproveedores?razSoc=${newQuery}`)
-        .then((res) => {
-          console.log('TCL: query -> res.data', res.data)
-          this.proveedores = res.data
-        })
+      axios.get(`http://localhost:3010/products/getproveedores?razSoc=${newQuery}`).then((res) => {
+        console.log('TCL: query -> res.data', res.data)
+        this.proveedores = res.data
+      })
     },
   },
   created: function() {

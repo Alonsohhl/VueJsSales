@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" :class="invoiceClass">
           <h2 class="header-title mb-4">Ingreso de Documento de Venta</h2>
 
           <!-- <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p> -->
@@ -174,6 +174,7 @@
             </div>
           </form>
         </div>
+        <div class="" :class="invoiceClass"> </div>
       </div>
       <!-- end card-box -->
     </div>
@@ -188,6 +189,7 @@ import axios from 'axios'
 import { required, minValue } from 'vuelidate/lib/validators'
 
 import { API_URL } from '@src/app.config'
+import Swal from 'sweetalert2'
 // const mustBeCool = (value) => false
 
 export default {
@@ -214,7 +216,7 @@ export default {
       nameOptions: ['Small', 'Medium', 'Large', 'Extra Large'],
 
       form: {
-        submitStatus: null,
+        submitStatus: '',
         tipClient: {
           value: 'REGISTRADO',
           options: [
@@ -257,13 +259,14 @@ export default {
           Nom_Cli: '',
           Dni_Cli: '',
         },
+        // prettier-ignore
         detalleItems: [
-          { line_medi: 1, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null },
-          { line_medi: 2, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null },
-          { line_medi: 3, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null },
-          { line_medi: 4, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null },
-          { line_medi: 5, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null },
-        ],
+          { line_medi: 1, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null ,valid:false},
+          { line_medi: 2, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null ,valid:false},
+          { line_medi: 3, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null ,valid:false},
+          { line_medi: 4, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null ,valid:false},
+          { line_medi: 5, Cod_Medi: null, Nom_Medi: null, Cant_Dmed: null, Precio_Unitario: null, Importe_Total: null ,valid:false},
+        ]
       },
     }
   },
@@ -273,37 +276,29 @@ export default {
       Invoice: {
         DateCreacion: { required },
         DateVencimiento: { required },
-        subTotal: { required, minValue: minValue(1) },
+        subTotal: { required, minValue: minValue(0.01) },
         igv: { required },
-        igvTotal: { required, minValue: minValue(1) },
-        precioTotal: { required, minValue: minValue(1) },
+        igvTotal: { required, minValue: minValue(0.01) },
+        precioTotal: { required, minValue: minValue(0.01) },
         client: { id: { required } },
       },
     }
   },
   computed: {
+    invoiceClass() {
+      return this.form.submitStatus === 'SUBMITED' ? 'fadeOutRightBig animated' : null
+    },
+
     currentUser() {
       return this.$store.state.auth.currentUser
     },
-    autoComplete: function() {
+    autoComplete: function () {
       // `this` points to the vm instance
-      return this.message
-        .split('')
-        .reverse()
-        .join('')
-    },
-    precioTotal: () => {
-      return 123
-    },
-
-    Total: () => {
-      return this.detalleItems.reduce(function(cnt, o) {
-        return cnt + o.Importe_Total
-      }, 0)
+      return this.message.split('').reverse().join('')
     },
   },
   watch: {
-    'Invoice.client.id': function(newQuestion, oldQuestion) {
+    'Invoice.client.id': function (newQuestion, oldQuestion) {
       this.$v.Invoice.client.id.$touch()
       axios
         .get(API_URL + `clients/find?id=${this.Invoice.client.id}`)
@@ -341,6 +336,8 @@ export default {
           this.Invoice.detalleItems[index].Nom_Medi = res.data.Nom_Medi
           this.Invoice.detalleItems[index].Precio_Unitario = res.data.Precio_Unitario
           this.Invoice.detalleItems[index].Cant_Dmed = 0
+          this.Invoice.detalleItems[index].valid = true
+
           this.form.itemsFieldsTable[index].state = true
 
           return this.Invoice.detalleItems[index].id
@@ -351,6 +348,7 @@ export default {
           this.Invoice.detalleItems[index].Precio_Unitario = 0
           this.Invoice.detalleItems[index].Cant_Dmed = 0
           this.form.itemsFieldsTable[index].state = false
+          this.Invoice.detalleItems[index].valid = false
         })
     },
     calcImpTotal(index) {
@@ -358,14 +356,16 @@ export default {
       this.Invoice.detalleItems[index].Importe_Total =
         this.Invoice.detalleItems[index].Cant_Dmed * this.Invoice.detalleItems[index].Precio_Unitario
 
-      this.Invoice.subTotal = this.Invoice.detalleItems.reduce(function(cnt, o) {
+      this.Invoice.subTotal = this.Invoice.detalleItems.reduce(function (cnt, o) {
         return cnt + o.Importe_Total
       }, 0)
 
       this.Invoice.igvTotal = this.Invoice.subTotal * (this.Invoice.igv * 0.01)
       this.Invoice.precioTotal = this.Invoice.igvTotal + this.Invoice.subTotal
     },
+
     onSubmit(evt) {
+      console.dir(this.Invoice.detalleItems)
       this.$v.Invoice.$touch()
       if (this.$v.Invoice.$anyError) {
         console.log(this.$v.Invoice.$anyError)
@@ -379,11 +379,8 @@ export default {
         axios
           .post(API_URL + 'ventas/setVenta', {
             cabecera: {
-              Ser_Boleta: this.Invoice.Dni_Cli,
-              Num_Boleta: 1111,
-
+              Ser_Boleta: 'F001',
               Cod_Sucur: '1',
-
               Fecha_Boleta: this.Invoice.DateCreacion,
               Fecha_Venc_Boleta: this.Invoice.DateVencimiento,
               id_Usuario: this.currentUser.name.id,
@@ -391,35 +388,35 @@ export default {
               Sub_Total: this.Invoice.subTotal,
               IGV: this.Invoice.igvTotal,
               Precio_Total: this.Invoice.precioTotal,
-              detalle: this.Invoice.detalleItems.map(() => {
-                return {
-                  Cod_Medi: '3',
-                  Nom_Medi: '111',
-                  Cant_Dmed: 1,
-                  Precio_Unitario: 1,
-                  Importe_Total: 1,
-                }
-              }),
+              detalle: this.Invoice.detalleItems
+                .filter((line) => line.valid)
+                .map((currentItem) => {
+                  console.log(currentItem)
+                  return {
+                    Cod_Medi: currentItem.id,
+                    Nom_Medi: currentItem.Nom_Medi,
+                    Cant_Dmed: currentItem.Cant_Dmed,
+                    Precio_Unitario: currentItem.Precio_Unitario,
+                    Importe_Total: currentItem.Importe_Total,
+                  }
+                }),
             },
           })
           .then((response) => {
+            console.log('-->')
             console.dir(response)
-            setTimeout((response) => {
+            setTimeout(() => {
               console.log('ingresado')
-              //   currentObj.output = response
-              this.form.submitStatus = 'OK'
-              // Object.assign(this.$data, this.$options.data())
-              // console.Object
-              // this.form.Dni_Cli = ''
-              // this.form.Nom_Cli = ''
-              // this.form.App_Cli = ''
-              // this.form.Apm_Cli = ''
-              // this.form.Correo_Cli = ''
-              // this.form.Sexo_Cli.value = 'masculino'
+              this.form.submitStatus = 'SUBMITED'
+              Swal.fire({
+                title: 'Registro Exitoso!',
+                text: 'Factura ingresada correctamente',
+                icon: 'success',
+                confirmButtonText: 'Continuar',
+              })
+              this.$router.push({ name: 'displayInvoice', params: { id: response.data.id } })
               this.$v.$reset()
             }, 500)
-            // this.form.submitStatus = 'OK'
-            //   currentObj.output = response.data;
           })
           .catch((err) => {
             if (err.response && err.response.data) {

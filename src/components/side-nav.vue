@@ -6,10 +6,14 @@ import MetisMenu from 'metismenujs/dist/metismenujs'
 
 export default {
   components: {},
+  data() {
+    return { valu: false }
+  },
   computed: {
     ...authComputed,
   },
-  mounted: function() {
+
+  mounted: function () {
     // eslint-disable-next-line no-unused-vars
     var menuRef = new MetisMenu('#side-menu')
     var links = document.getElementsByClassName('side-nav-link-ref')
@@ -111,13 +115,9 @@ export default {
       <li class="menu-title">Opciones</li>
 
       <li class="active">
-        <a
-          href="javascript: void(0);"
-          aria-expanded="false"
-          class="has-dropdown"
-        >
+        <a href="javascript: void(0);" aria-expanded="false" class="has-dropdown">
           <i class="fe-airplay"></i>
-          <span class="badge badge-success badge-pill float-right">2</span>
+          <!-- <span class="badge badge-success badge-pill float-right">2</span> -->
           <span>Dashboard</span>
         </a>
         <ul class="nav-second-level" aria-expanded="false">
@@ -128,7 +128,7 @@ export default {
               <span class="menu-arrow"></span>
             </a> -->
 
-            <a href="javascript: void(0);" aria-expanded="false">
+            <a href="javascript: void(0);" aria-expanded="false" class="waves-effect">
               <i class="fe-shopping-cart"></i>
               <span> Ventas </span>
               <span class="menu-arrow"></span>
@@ -136,13 +136,12 @@ export default {
 
             <ul class="nav-second-level collapse" aria-expanded="false">
               <li>
-                <!-- <a href="ecommerce-dashboard.html">Realizar Venta</a> -->
-                <router-link
-                  tag="a"
-                  :to="{ name: 'insVenta' }"
-                  class="side-nav-link-ref"
-                  >Realizar Venta</router-link
+                <router-link tag="a" :to="{ name: 'displaySales' }" class="side-nav-link-ref"
+                  >Ordenes de Compra</router-link
                 >
+              </li>
+              <li>
+                <router-link tag="a" :to="{ name: 'insVenta' }" class="side-nav-link-ref">Realizar Venta</router-link>
               </li>
               <!-- <li>
                   <a href="ecommerce-products.html">Products</a>
@@ -165,35 +164,22 @@ export default {
           </li>
           <li>
             <a href="javascript: void(0);" class="has-dropdown">
-              <i class="fe-package" style="margin: 0 10px 0 3px"></i>
+              <i class="fe-package" style="margin: 0 10px 0 3px;"></i>
               <span>Productos</span>
               <span class="menu-arrow"></span>
             </a>
 
             <ul class="nav-third-level nav collapse" aria-expanded="true">
               <li>
-                <router-link
-                  tag="a"
-                  :to="{ name: 'mainProd' }"
-                  class="side-nav-link-ref"
-                  >productos</router-link
-                >
+                <router-link tag="a" :to="{ name: 'mainProd' }" class="side-nav-link-ref">productos</router-link>
               </li>
               <li>
-                <router-link
-                  tag="a"
-                  :to="{ name: 'insertarProd' }"
-                  class="side-nav-link-ref"
+                <router-link tag="a" :to="{ name: 'insertarProd' }" class="side-nav-link-ref"
                   >Ingresar Productos</router-link
                 >
               </li>
               <li>
-                <router-link
-                  tag="a"
-                  :to="{ name: 'mainCategories' }"
-                  class="side-nav-link-ref"
-                  >Categorias</router-link
-                >
+                <router-link tag="a" :to="{ name: 'mainCategories' }" class="side-nav-link-ref">Categorias</router-link>
               </li>
               <!-- <li>
                 <router-link tag="a" to="/productos">Productoss</router-link>
@@ -208,74 +194,45 @@ export default {
           </li>
           <li>
             <a href="javascript: void(0);" class="has-dropdown">
-              <i class="fe-users" style="margin: 0 10px 0 3px"></i>
+              <i class="fe-users" style="margin: 0 10px 0 3px;"></i>
               <span>Usuarios</span>
               <span class="menu-arrow"></span>
             </a>
             <ul class="nav-third-level nav collapse" aria-expanded="true">
               <li>
-                <router-link
-                  tag="a"
-                  :to="{ name: 'clientes' }"
-                  class="side-nav-link-ref"
-                  >Clientes</router-link
-                >
+                <router-link tag="a" :to="{ name: 'clientes' }" class="side-nav-link-ref">Clientes</router-link>
               </li>
               <li>
-                <router-link
-                  tag="a"
-                  :to="{ name: 'adminUserDisplay' }"
-                  class="side-nav-link-ref"
+                <router-link tag="a" :to="{ name: 'adminUserDisplay' }" class="side-nav-link-ref"
                   >Administradores</router-link
                 >
               </li>
             </ul>
           </li>
-          <li>
+          <!-- <li>
             <router-link tag="a" to="/dashboard2">Proveedores</router-link>
-          </li>
+          </li> -->
         </ul>
       </li>
-
+      <!--
       <li>
-        <a
-          href="javascript: void(0);"
-          aria-expanded="false"
-          class="has-dropdown"
-        >
+        <a href="javascript: void(0);" aria-expanded="false" class="has-dropdown">
           <i class="fe-airplay"></i>
           <span class="badge badge-success badge-pill float-right">4</span>
           <span>Administración</span>
         </a>
         <ul class="nav-second-level" aria-expanded="false">
           <li>
-            <router-link tag="a" to="/" class="side-nav-link-ref"
-              >Dashboard 1</router-link
-            >
+            <router-link tag="a" to="/" class="side-nav-link-ref">Dashboard 1</router-link>
           </li>
           <li>
-            <router-link
-              tag="a"
-              to="/dashboards/dashboard2"
-              class="side-nav-link-ref"
-              >Dashboard 2</router-link
-            >
+            <router-link tag="a" to="/dashboards/dashboard2" class="side-nav-link-ref">Dashboard 2</router-link>
           </li>
           <li>
-            <router-link
-              tag="a"
-              to="/dashboards/dashboard3"
-              class="side-nav-link-ref"
-              >Dashboard 3</router-link
-            >
+            <router-link tag="a" to="/dashboards/dashboard3" class="side-nav-link-ref">Dashboard 3</router-link>
           </li>
           <li>
-            <router-link
-              tag="a"
-              to="/dashboards/dashboard4"
-              class="side-nav-link-ref"
-              >Dashboard 4</router-link
-            >
+            <router-link tag="a" to="/dashboards/dashboard4" class="side-nav-link-ref">Dashboard 4</router-link>
           </li>
         </ul>
       </li>
@@ -305,7 +262,7 @@ export default {
             </ul>
           </li>
         </ul>
-      </li>
+      </li> -->
     </ul>
     <div class="clearfix"></div>
   </div>
