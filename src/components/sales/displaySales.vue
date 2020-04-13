@@ -106,7 +106,7 @@ export default {
         },
         fields: [
           { key: 'id', label: 'ID' },
-          { key: 'Ser_Boleta', label: 'Dni' },
+          { key: 'Ser_Boleta', label: 'Serie' },
           { key: 'Num_Boleta', label: 'Numero' },
           { key: 'Fecha_Boleta', label: 'Fecha' },
           { key: 'Precio_Total', label: 'Precio' },
@@ -117,28 +117,35 @@ export default {
       },
     }
   },
-  created: function () {
+  created: function() {
     moment.locale('es-PE')
 
     this.fillTable()
   },
   methods: {
-    fillTable: function (id) {
+    fillTable: function(value) {
       let axiosQuery = `${API_URL}ventas/fetchAll`
-      if (id) axiosQuery += `?id=${id}`
+      if (value & (this.table.filter.selectedOption === 'id')) axiosQuery += `?id=${value}`
+      if (value & (this.table.filter.selectedOption === 'Num_Boleta')) axiosQuery += `?Num_Boleta=${value}`
+
       axios
         .get(axiosQuery)
         .then((response) => {
           this.salesRawData = response.data
           this.tableCatIsBusy = false
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error)
         })
     },
   },
   watch: {
-    'table.filter.value': function () {
+    'table.filter.value': function() {
+      // if(this.table.filter.selectedOption===)
+      this.fillTable(this.table.filter.value)
+    },
+    'table.filter.selectedOption': function() {
+      // if(this.table.filter.selectedOption===)
       this.fillTable(this.table.filter.value)
     },
   },

@@ -121,7 +121,6 @@
                 <div class="card-box">
                   <b-table
                     striped
-                    hover
                     :items="Invoice.detalleItems"
                     :fields="form.itemsFieldsTable"
                     class="table table-centered mb-0"
@@ -133,20 +132,42 @@
                         placeholder="Cod"
                         bounce="500"
                         class="tabledit-input form-control form-control-sm"
-                        :state="form.itemsFieldsTable[row.index].state"
-                        @input="findProductInfo(row.index)"
+                        :state="null"
+                        @update="findProductInfo(row.index)"
                       ></b-form-input>
+                    </template>
+                    <template v-slot:cell(line_medi)="row">
+                      {{ row.index + 1 }}
+                    </template>
+
+                    <template v-slot:cell(Precio_Unitario)="row">
+                      {{ row.item.Precio_Unitario | toCurrency }}
+                    </template>
+
+                    <template v-slot:cell(Importe_Total)="row">
+                      {{ row.item.Importe_Total | toCurrency }}
                     </template>
 
                     <template v-slot:cell(Cant_Dmed)="row">
                       <b-form-input
                         v-model="Invoice.detalleItems[row.index].Cant_Dmed"
                         placeholder="Cant."
-                        @input="calcImpTotal(row.index)"
+                        @update="calcImpTotal(row.index)"
                       ></b-form-input>
                     </template>
 
+                    <template v-slot:cell(actions)="row">
+                      <b-button class="tabledit-edit-button btn btn-danger" @click="deleteRow(row.index)">
+                        <span class="fe-trash-2"></span>
+                      </b-button>
+                    </template>
+
                     <template v-slot:custom-foot="">
+                      <b-tr>
+                        <b-th colspan="6" class="text-center"
+                          ><b-button variant="outline-success" size="sm" @click="addLine">Agregar Fila</b-button></b-th
+                        >
+                      </b-tr>
                       <b-tr>
                         <b-th :colspan="3" sticky-column>Resultados</b-th>
                         <b-th :colspan="2" class="text-right" sticky-column>Importe Bruto:</b-th>
@@ -219,10 +240,7 @@ export default {
         submitStatus: '',
         tipClient: {
           value: 'REGISTRADO',
-          options: [
-            { text: 'Cliente Registrado', value: 'REGISTRADO' },
-            { text: 'Cliente Nuevo', value: 'NUEVO' },
-          ],
+          options: [{ text: 'Cliente Registrado', value: 'REGISTRADO' }, { text: 'Cliente Nuevo', value: 'NUEVO' }],
         },
         client: {
           id: { state: null },
@@ -241,6 +259,7 @@ export default {
           { key: 'Cant_Dmed', label: 'Cantidad', thStyle: 'width: 100px' },
           { key: 'Precio_Unitario', label: 'Val. Uni.' },
           { key: 'Importe_Total', label: 'Val. Total' },
+          { key: 'actions', label: '', thStyle: 'width: 5%' },
         ],
 
         searchBar: '',
@@ -292,13 +311,16 @@ export default {
     currentUser() {
       return this.$store.state.auth.currentUser
     },
-    autoComplete: function () {
+    autoComplete: function() {
       // `this` points to the vm instance
-      return this.message.split('').reverse().join('')
+      return this.message
+        .split('')
+        .reverse()
+        .join('')
     },
   },
   watch: {
-    'Invoice.client.id': function (newQuestion, oldQuestion) {
+    'Invoice.client.id': function(newQuestion, oldQuestion) {
       this.$v.Invoice.client.id.$touch()
       axios
         .get(API_URL + `clients/find?id=${this.Invoice.client.id}`)
@@ -319,6 +341,21 @@ export default {
   },
 
   methods: {
+    deleteRow(index) {
+      this.Invoice.detalleItems.splice(index, 1)
+      this.calcImpTotal(index)
+    },
+    addLine() {
+      this.Invoice.detalleItems.push({
+        line_medi: this.Invoice.detalleItems.length + 1,
+        Cod_Medi: null,
+        Nom_Medi: null,
+        Cant_Dmed: null,
+        Precio_Unitario: null,
+        Importe_Total: null,
+        valid: false,
+      })
+    },
     findClientInputOptions: () => {
       axios.get(
         (API_URL + `clients/find?id=${this.searchBar}`).then((response) => {
@@ -337,9 +374,8 @@ export default {
           this.Invoice.detalleItems[index].Precio_Unitario = res.data.Precio_Unitario
           this.Invoice.detalleItems[index].Cant_Dmed = 0
           this.Invoice.detalleItems[index].valid = true
-
           this.form.itemsFieldsTable[index].state = true
-
+          this.calcImpTotal(index)
           return this.Invoice.detalleItems[index].id
         })
         .catch((error) => {
@@ -356,7 +392,7 @@ export default {
       this.Invoice.detalleItems[index].Importe_Total =
         this.Invoice.detalleItems[index].Cant_Dmed * this.Invoice.detalleItems[index].Precio_Unitario
 
-      this.Invoice.subTotal = this.Invoice.detalleItems.reduce(function (cnt, o) {
+      this.Invoice.subTotal = this.Invoice.detalleItems.reduce(function(cnt, o) {
         return cnt + o.Importe_Total
       }, 0)
 
