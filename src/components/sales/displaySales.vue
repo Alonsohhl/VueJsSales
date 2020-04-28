@@ -117,6 +117,16 @@ export default {
       },
     }
   },
+  watch: {
+    'table.filter.value': function() {
+      // if(this.table.filter.selectedOption===)
+      this.fillTable(this.table.filter.value)
+    },
+    'table.filter.selectedOption': function() {
+      // if(this.table.filter.selectedOption===)
+      this.fillTable(this.table.filter.value)
+    },
+  },
   created: function() {
     moment.locale('es-PE')
 
@@ -137,16 +147,6 @@ export default {
         .catch(function(error) {
           console.log(error)
         })
-    },
-  },
-  watch: {
-    'table.filter.value': function() {
-      // if(this.table.filter.selectedOption===)
-      this.fillTable(this.table.filter.value)
-    },
-    'table.filter.selectedOption': function() {
-      // if(this.table.filter.selectedOption===)
-      this.fillTable(this.table.filter.value)
     },
   },
 }
