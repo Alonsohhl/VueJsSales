@@ -39,7 +39,7 @@
     "bootstrap-vue": "^2.0.0-rc.24",
     "buefy": "^0.8.6",
     "dotenv": "^8.1.0",
-    "lodash": "4.17.11",
+    "lodash": "4.17.19",
     "luxon": "^1.17.2",
     "metismenujs": "^1.0.3",
     "moment": "^2.24.0",
