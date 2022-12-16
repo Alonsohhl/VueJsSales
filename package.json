@@ -73,7 +73,7 @@
     "cross-env": "5.2.x",
     "eslint": "5.16.x",
     "eslint-plugin-vue": "vuejs/eslint-plugin-vue#edd5f14",
-    "express": "4.16.x",
+    "express": "4.17.x",
     "hygen": "2.1.2",
     "imagemin-lint-staged": "0.4.x",
     "lint-staged": "8.1.x",
